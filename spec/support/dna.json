@@ -1,0 +1,268 @@
+{
+  "db_slaves": [
+
+  ],
+  "aws_secret_key": "AWS-SECRET-KEY",
+  "ruby_version": "Ruby 1.8.7",
+  "user_ssh_key": [
+    "ssh-rsa AAAAB3NzaC1yc2EAAAAB key-a",
+    "ssh-rsa AAAAB3NzaC1yc2EAAAAB key-b",
+    "ssh-rsa AAAAB3NzaC1yc2EAAAAB key-c"
+  ],
+  "backup_interval": 24,
+  "admin_ssh_key": "ssh-rsa AAAAB3NzaC1yc2EAAAAB ey-cloud-production\n",
+  "internal_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAAB \n",
+  "internal_ssh_private_key": "-----BEGIN RSA PRIVATE KEY-----\nPRIVATE-KEY\n-----END RSA PRIVATE KEY-----\n",
+  "utility_instances": [
+    {
+      "name": "APP-NAME_production_util_1",
+      "hostname": "internal_util_1.compute-1.internal"
+    }
+  ],
+  "instance_role": "app_master",
+  "mailserver": "smtp.engineyard.com",
+  "crons": [
+
+  ],
+  "removed_applications": [
+
+  ],
+  "backup_window": 10,
+  "members": [
+    "internal_app_master.compute-1.internal"
+  ],
+  "alert_email": "ALERT-EMAIL",
+  "gems_to_install": [
+    {
+      "name": "rails",
+      "version": "3.0.0"
+    }
+  ],
+  "applications": {
+    "APP-NAME": {
+      "auth": {
+        "active": false
+      },
+      "newrelic": false,
+      "https_bind_port": 443,
+      "repository_name": "APPS-0-REPOSITORY-NAME",
+      "type": "rack",
+      "migration_command": "rake db:migrate",
+      "http_bind_port": 80,
+      "revision": "",
+      "run_deploy": false,
+      "branch": "HEAD",
+      "deploy_key": "-----BEGIN RSA PRIVATE KEY-----\nAPPS-0-DEPLOY-KEY\n-----END RSA PRIVATE KEY-----\n",
+      "deploy_action": "deploy",
+      "run_migrations": false,
+      "services": [
+        {
+          "resource": "mongrel",
+          "mongrel_base_port": 5000,
+          "mongrel_mem_limit": 150,
+          "mongrel_instance_count": 3
+        },
+        {
+          "resource": "memcached",
+          "base_port": 11211,
+          "mem_limit": 128
+        }
+      ],
+      "recipes": [
+        "memcached",
+        "monit",
+        "nginx",
+        "nginx-passenger"
+      ],
+      "vhosts": [
+        {
+          "name": "_",
+          "role": "APP-NAME_production"
+        }
+      ]
+    }
+  },
+  "aws_secret_id": "AWS-SECRET-ID",
+  "users": [
+    {
+      "gid": "1000",
+      "username": "USERS-0-USERNAME",
+      "uid": "1000",
+      "comment": "",
+      "password": "USERS-0-PASSWORD"
+    }
+  ],
+  "environment": {
+    "name": "APP-NAME_production",
+    "stack": "nginx_passenger",
+    "framework_env": "production"
+  },
+  "master_app_server": {
+    "private_dns_name": "internal_app_master.compute-1.internal",
+    "public_ip": "external_app_master.compute-1.amazonaws.com"
+  },
+  "reporting_url": "https://cloud.engineyard.com/reporting/abcde",
+  "packages_to_install": [
+    {
+      "name": "dev-libs/oniguruma"
+    }
+  ],
+  "db_host": "external_db_master.compute-1.amazonaws.com",
+  "haproxy": {
+    "username": "HAPROXY-USERNAME",
+    "password": "HAPROXY-PASSWORD"
+  },
+  "engineyard": {
+    "environment": {
+      "apps": [
+        {
+          "name": "APP-NAME",
+          "newrelic": false,
+          "components": [
+
+          ],
+          "database_name": "APPS-0-DATABASE_NAME",
+          "migration_command": "rake db:migrate",
+          "type": "rack",
+          "repository_name": "APPS-0-REPOSITORY_NAME",
+          "run_deploy": false,
+          "revision": "",
+          "bundled": null,
+          "branch": "HEAD",
+          "run_migrations": false,
+          "deploy_action": "deploy",
+          "deploy_key": "-----BEGIN RSA PRIVATE KEY-----\nAPPS-0-DEPLOY-KEY\n-----END RSA PRIVATE KEY-----\n",
+          "gems": [
+            {
+              "name": "rails",
+              "version": "3.0.0",
+              "source": null
+            }
+          ],
+          "vhosts": [
+            {
+              "ssl_cert": null,
+              "domain_name": "_"
+            }
+          ],
+          "ebuilds": [
+            {
+              "name": "dev-libs/oniguruma"
+            }
+          ]
+        }
+      ],
+      "aws_secret_key": "AWS-SECRET-KEY",
+      "name": "APP-NAME_production",
+      "ssh_keys": [
+		    "ssh-rsa AAAAB3NzaC1yc2EAAAAB key-a",
+		    "ssh-rsa AAAAB3NzaC1yc2EAAAAB key-b",
+		    "ssh-rsa AAAAB3NzaC1yc2EAAAAB key-c"
+      ],
+      "instances": [
+        {
+          "name": null,
+          "public_hostname": "app_master.compute-1.amazonaws.com",
+          "components": [
+            {
+              "key": "ssmtp"
+            }
+          ],
+          "role": "app_master",
+          "enabled": true,
+          "id": "i-deadbeef",
+          "private_hostname": "internal_app_master.compute-1.internal",
+          "reporting_url": "https://cloud.engineyard.com/reporting/abcde",
+          "awsm_token": "app_master-aws_token"
+        },
+        {
+          "name": null,
+          "public_hostname": "app_1.compute-1.amazonaws.com",
+          "components": [
+            {
+              "key": "ssmtp"
+            }
+          ],
+          "role": "app",
+          "enabled": true,
+          "id": "i-app_1",
+          "private_hostname": "internal_app_master.compute-1.internal",
+          "reporting_url": "https://cloud.engineyard.com/reporting/abcde",
+          "awsm_token": "app_1-aws_token"
+        },
+        {
+          "name": null,
+          "public_hostname": "db_master.compute-1.amazonaws.com",
+          "components": [
+            {
+              "key": "ssmtp"
+            }
+          ],
+          "role": "db_master",
+          "enabled": true,
+          "id": "i-db_master",
+          "private_hostname": "internal_db_master.compute-1.internal",
+          "reporting_url": "https://cloud.engineyard.com/reporting/abcde",
+          "awsm_token": "db_master-aws_token"
+        },
+        {
+          "name": null,
+          "public_hostname": "db_slave_1.compute-1.amazonaws.com",
+          "components": [
+            {
+              "key": "ssmtp"
+            }
+          ],
+          "role": "db_slave",
+          "enabled": true,
+          "id": "i-db_slave_1",
+          "private_hostname": "internal_db_slave_1.compute-1.internal",
+          "reporting_url": "https://cloud.engineyard.com/reporting/abcde",
+          "awsm_token": "db_slave_1-aws_token"
+        },
+        {
+          "name": "foobarfoo",
+          "public_hostname": "util_1.compute-1.amazonaws.com",
+          "components": [
+            {
+              "key": "ssmtp"
+            }
+          ],
+          "role": "util",
+          "enabled": true,
+          "id": "i-util_1",
+          "private_hostname": "internal_util_1.compute-1.internal",
+          "reporting_url": "https://cloud.engineyard.com/reporting/abcde",
+          "awsm_token": "util_1-aws_token"
+        }
+      ],
+      "stonith_endpoint": "https://cloud.engineyard.com/stonith",
+      "ruby_version": null,
+      "framework_env": "production",
+      "backup_interval": 24,
+      "admin_ssh_key": "ssh-rsa AAAAB3NzaC1 ey-cloud-production\n",
+      "internal_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAAB \n",
+      "ssh_username": "SSH-USERNAME",
+      "internal_ssh_private_key": "-----BEGIN RSA PRIVATE KEY-----\nINTERNAL-SSH-PRIVATE-KEY\n-----END RSA PRIVATE KEY-----\n",
+      "mailserver": "smtp.engineyard.com",
+      "components": [
+        {
+          "key": "ruby_187"
+        }
+      ],
+      "stats_password": "STATS-PASSWORD",
+      "crons": [
+
+      ],
+      "backup_window": 10,
+      "stack_name": "nginx_passenger",
+      "alert_email": "ALERT-EMAIL",
+      "ssh_password": "SSH-PASSWORD",
+      "db_stack_name": "mysql",
+      "aws_secret_id": "AWS-SECRET-ID",
+      "newrelic_key": null,
+      "monitoring": "monit"
+    },
+    "this": "i-deadbeef"
+  }
+}
