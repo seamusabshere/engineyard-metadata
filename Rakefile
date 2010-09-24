@@ -5,12 +5,15 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "engineyard-metadata"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Make your EngineYard AppCloud (Amazon EC2) instances aware of each other.}
+    gem.description = %Q{Pulls metadata from EC2 and EngineYard so that your EngineYard AppCloud (Amazon EC2) instances know about each other.}
     gem.email = "seamus@abshere.net"
     gem.homepage = "http://github.com/seamusabshere/engineyard-metadata"
     gem.authors = ["Seamus Abshere"]
-    gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
+    gem.add_dependency 'activesupport', '>=2.3.4'
+    gem.add_development_dependency "fakeweb"
+    gem.add_development_dependency "fakefs"
+    gem.add_development_dependency "rspec", "~>1"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

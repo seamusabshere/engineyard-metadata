@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'spec'
-require 'ruby-debug'
+# require 'ruby-debug'
+# assumes active-support 3
 require 'active_support/json/encoding'
 
 PRESENT_PUBLIC_HOSTNAME = 'app_master.compute-1.amazonaws.com'
