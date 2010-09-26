@@ -1,3 +1,4 @@
+require 'active_support'
 require 'active_support/version'
 %w{
   active_support/json
