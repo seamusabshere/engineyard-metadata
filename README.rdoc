@@ -4,12 +4,24 @@ Pulls metadata from EC2 and EngineYard so that your EngineYard Cloud instances k
 
 == Purpose
 
-To define an unchanging interface to certain metadata that is buried deep inside JSON config files and EC2 API calls.
+To define an unchanging interface to useful metadata (passwords, IP addresses, etc.) that is otherwise buried deep inside EngineYard's chef config files and EC2 API calls.
 
-== Quickstart
+== Examples
 
-This only runs from EngineYard AppCloud instances (running on Amazon EC2).
+* Get a dynamically updated list of all running app servers so that you can pool memcached over all of them. (<tt>EY::Metadata.app_servers</tt>)
+* Get the current database password so that you can write a script that connects to it. (<tt>EY::Metadata.database_password</tt>)
 
+== Use
+
+Get the full method list in {the engineyard-metadata rdoc}[http://rdoc.info/github/seamusabshere/engineyard-metadata].
+
+Metadata getters are defined directly on <tt>EY::Metadata</tt>. Even if EngineYard changes the structure of the config files or Amazon EC2's API changes, these methods will stay the same.
+
+This only runs on EngineYard AppCloud instances (running on Amazon EC2).
+
+  [...]
+  >> require 'rubygems'
+  [...]
   >> require 'engineyard-metadata'
   [...]
   >> EY::Metadata.database_host
