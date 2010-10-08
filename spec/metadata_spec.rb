@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe EY do
-  it 'has a dna.json' do
+  it 'has a FakeFS dna.json' do
     File.exist?('/etc/chef/dna.json').should == true
   end
 end
@@ -9,6 +9,10 @@ end
 describe EY::Metadata do
   it 'gets the present instance ID' do
     EY::Metadata.present_instance_id.should == PRESENT_INSTANCE_ID
+  end
+  
+  it 'gets the present instance role (as a string)' do
+    EY::Metadata.present_instance_role.should == 'app_master'
   end
   
   it 'gets the present public hostname' do
@@ -61,5 +65,13 @@ describe EY::Metadata do
   
   it 'gets the db master hostname' do
     EY::Metadata.db_master.should == 'db_master.compute-1.amazonaws.com'
+  end
+  
+  it 'gets the mysql command' do
+    EY::Metadata.mysql_command.should == '/usr/bin/mysql -h external_db_master.compute-1.amazonaws.com -u USERS-0-USERNAME -pUSERS-0-PASSWORD APPS-0-DATABASE_NAME'
+  end
+  
+  it 'gets the mysqldump command' do
+    EY::Metadata.mysqldump_command.should == '/usr/bin/mysqldump -h external_db_master.compute-1.amazonaws.com -u USERS-0-USERNAME -pUSERS-0-PASSWORD APPS-0-DATABASE_NAME'
   end
 end

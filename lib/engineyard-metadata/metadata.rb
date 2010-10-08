@@ -6,6 +6,7 @@ module EY
     }
         
     DELEGATED_TO_CHEF_DNA = %w{
+      present_instance_role
       present_public_hostname
       database_password
       database_username
@@ -18,6 +19,8 @@ module EY
       utilities
       app_master
       db_master
+      mysql_command
+      mysqldump_command
     }
     
     DELEGATED_TO_AMAZON_EC2_API.each do |name|

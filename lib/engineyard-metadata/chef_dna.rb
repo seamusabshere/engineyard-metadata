@@ -10,11 +10,18 @@ module EY
   module Metadata
     class ChefDna
       PATH = '/etc/chef/dna.json'
+      MYSQL_BIN = '/usr/bin/mysql'
+      MYSQLDUMP_BIN = '/usr/bin/mysqldump'
       
       def data # :nodoc:
         @data ||= ActiveSupport::JSON.decode File.read(PATH)
       end
     
+      # The present instance's role
+      def present_instance_role
+        data['instance_role']
+      end
+      
       # The present instance's public hostname.
       def present_public_hostname
         data['engineyard']['environment']['instances'].detect { |i| i['id'] == EY::Metadata.present_instance_id }['public_hostname']
@@ -85,6 +92,16 @@ module EY
         i = data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'db_master' } ||
             data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'solo' }
         i['public_hostname']
+      end
+      
+      # The shell command for mysql, including username, password, hostname and database
+      def mysql_command
+        "#{MYSQL_BIN} -h #{database_host} -u #{database_username} -p#{database_password} #{database_name}"
+      end
+
+      # The shell command for mysql, including username, password, hostname and database
+      def mysqldump_command
+        "#{MYSQLDUMP_BIN} -h #{database_host} -u #{database_username} -p#{database_password} #{database_name}"
       end
     end
   end
