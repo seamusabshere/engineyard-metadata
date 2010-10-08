@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{engineyard-metadata}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Seamus Abshere"]
-  s.date = %q{2010-09-24}
+  s.date = %q{2010-10-08}
   s.description = %q{Pulls metadata from EC2 and EngineYard so that your EngineYard AppCloud (Amazon EC2) instances know about each other.}
   s.email = %q{seamus@abshere.net}
   s.extra_rdoc_files = [
