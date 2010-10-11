@@ -65,12 +65,22 @@ module EY
       def app_servers
         data['engineyard']['environment']['instances'].select { |i| %w{ app_master app solo }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
       end
+      
+      # The public hostnames of all the app slaves.
+      def app_slaves
+        data['engineyard']['environment']['instances'].select { |i| %w{ app }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+      end
     
       # The public hostnames of all the db servers.
       #
       # If you're on a solo app, it counts the solo as a db server.
       def db_servers
         data['engineyard']['environment']['instances'].select { |i| %w{ db_master db_slave solo }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+      end
+    
+      # The public hostnames of all the db slaves.
+      def db_slaves
+        data['engineyard']['environment']['instances'].select { |i| %w{ db_slave }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
       end
     
       # The public hostnames of all the utility servers.
@@ -82,16 +92,27 @@ module EY
     
       # The public hostname of the app_master.
       def app_master
-        i = data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'app_master' } ||
-            data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'solo' }
-        i['public_hostname']
+        if x = data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'app_master' }
+          x['public_hostname']
+        else
+          solo
+        end
       end
     
       # The public hostname of the db_master,
       def db_master
-        i = data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'db_master' } ||
-            data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'solo' }
-        i['public_hostname']
+        if x = data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'db_master' }
+          x['public_hostname']
+        else
+          solo
+        end
+      end
+      
+      # The public hostname of the solo.
+      def solo
+        if x = data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'solo' }
+          x['public_hostname']
+        end
       end
       
       # The shell command for mysql, including username, password, hostname and database
@@ -102,6 +123,11 @@ module EY
       # The shell command for mysql, including username, password, hostname and database
       def mysqldump_command
         "#{MYSQLDUMP_BIN} -h #{database_host} -u #{database_username} -p#{database_password} #{database_name}"
+      end
+      
+      # The name of the EngineYard AppCloud environment.
+      def environment_name
+        data['environment']['name']
       end
     end
   end

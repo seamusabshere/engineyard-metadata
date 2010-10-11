@@ -55,7 +55,7 @@ describe EY::Metadata do
     EY::Metadata.db_servers.should == [ 'db_master.compute-1.amazonaws.com', 'db_slave_1.compute-1.amazonaws.com' ]
   end
   
-  it 'gets the utilitie hostnames' do
+  it 'gets the utilities hostnames' do
     EY::Metadata.utilities.should == [ 'util_1.compute-1.amazonaws.com' ]
   end
 
@@ -73,5 +73,21 @@ describe EY::Metadata do
   
   it 'gets the mysqldump command' do
     EY::Metadata.mysqldump_command.should == '/usr/bin/mysqldump -h external_db_master.compute-1.amazonaws.com -u USERS-0-USERNAME -pUSERS-0-PASSWORD APPS-0-DATABASE_NAME'
+  end
+  
+  it 'gets the db slave hostnames' do
+    EY::Metadata.db_slaves.should == [ 'db_slave_1.compute-1.amazonaws.com' ]
+  end
+
+  it 'gets the app slave hostnames' do
+    EY::Metadata.app_slaves.should == [ 'app_1.compute-1.amazonaws.com' ]
+  end
+  
+  it 'gets the solo hostname' do
+    EY::Metadata.solo.should == nil
+  end
+  
+  it 'gets the environment name' do
+    EY::Metadata.environment_name.should == 'APP-NAME_production'
   end
 end

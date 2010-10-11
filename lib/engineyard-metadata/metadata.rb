@@ -21,6 +21,10 @@ module EY
       db_master
       mysql_command
       mysqldump_command
+      app_slaves
+      db_slaves
+      solo
+      environment_name
     }
     
     DELEGATED_TO_AMAZON_EC2_API.each do |name|
