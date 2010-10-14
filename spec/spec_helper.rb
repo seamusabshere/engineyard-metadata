@@ -9,10 +9,10 @@ require 'fakefs/safe'
 PRESENT_PUBLIC_HOSTNAME = 'app_master.compute-1.amazonaws.com'
 PRESENT_SECURITY_GROUP = 'ey-data1_production-1-2-3'
 PRESENT_INSTANCE_ID = 'i-deadbeef'
-REPOSITORY_URI = 'FAKE_REPOSITORY_URI'
+FAKE_CLOUD_TOKEN = 'FAKE_EY_CLOUD_TOKEN'
+FAKE_ENVIRONMENT_NAME = 'FAKE_ENVIRONMENT_NAME'
 
 def pretend_we_are_on_a_developer_machine
-  ENV['REPOSITORY_URI'] = REPOSITORY_URI
   FakeWeb.allow_net_connect = false
   FakeWeb.register_uri  :get,
                         "https://cloud.engineyard.com/api/v2/environments",

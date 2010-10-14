@@ -2,6 +2,18 @@
 	[
 		{"app_master":
 		{"public_hostname":"app_master.compute-1.amazonaws.com","name":null,"status":"running","amazon_id":"i-aaaaaaaa","role":"app_master","id":11111
+		},"ssh_username":"WRONG_SSH_USERNAME","stack_name":"WRONG_STACK_NAME","framework_env":"production","name":"WRONG_ENVIRONMENT_NAME","account":
+		{"name":"WRONG_ACCOUNT_NAME","id":12345
+		},"instances_count":0,"apps":
+		[
+		{"repository_uri":"FAKE_REPOSITORY_URI","name":"WRONG_APP_NAME","account":
+		{"name":"WRONG_ACCOUNT_NAME","id":12345
+		},"id":292301
+		}
+		],"id":382918,"instances":[]
+		},
+		{"app_master":
+		{"public_hostname":"app_master.compute-1.amazonaws.com","name":null,"status":"running","amazon_id":"i-aaaaaaaa","role":"app_master","id":11111
 		},"ssh_username":"FAKE_SSH_USERNAME","stack_name":"FAKE_STACK_NAME","framework_env":"production","name":"FAKE_ENVIRONMENT_NAME","account":
 		{"name":"FAKE_ACCOUNT_NAME","id":12345
 		},"instances_count":5,"apps":

@@ -13,43 +13,44 @@ To define an unchanging interface to useful metadata (passwords, IP addresses, e
 
 Here's the current method list:
 
-  present_instance_id     (only works from cloud instances)
-  present_security_group  (only works from cloud instances)
-  present_instance_role   (only works from cloud instances)
-  present_public_hostname (only works from cloud instances)
-  database_password       (only works from cloud instances)
-  database_username
-  database_name
-  database_host
-  ssh_username
-  ssh_password            (only works from cloud instances)
-  app_servers
-  db_servers
-  utilities
-  app_master
-  db_master
-  mysql_command           (only works from cloud instances)
-  mysqldump_command       (only works from cloud instances)
-  app_slaves
-  db_slaves
-  solo
-  environment_name
-  stack_name
+  EY::Metadata.present_instance_id     (only works from cloud instances)
+  EY::Metadata.present_security_group  (only works from cloud instances)
+  EY::Metadata.present_instance_role   (only works from cloud instances)
+  EY::Metadata.present_public_hostname (only works from cloud instances)
+  EY::Metadata.database_password       (only works from cloud instances)
+  EY::Metadata.database_username
+  EY::Metadata.database_name
+  EY::Metadata.database_host
+  EY::Metadata.ssh_username
+  EY::Metadata.ssh_password            (only works from cloud instances)
+  EY::Metadata.app_servers
+  EY::Metadata.db_servers
+  EY::Metadata.utilities
+  EY::Metadata.app_master
+  EY::Metadata.db_master
+  EY::Metadata.mysql_command           (only works from cloud instances)
+  EY::Metadata.mysqldump_command       (only works from cloud instances)
+  EY::Metadata.app_slaves
+  EY::Metadata.db_slaves
+  EY::Metadata.solo
+  EY::Metadata.environment_name
+  EY::Metadata.stack_name
+  EY::Metadata.repository_uri
 
 == Use
 
 See the rdoc at {the engineyard-metadata rdoc}[http://rubydoc.info/gems/engineyard-metadata].
 
-=== From the inside
+=== When you're executing this gem from INSIDE the cloud
 
 When you're executing the gem from your instances, you don't have to configure anything. Just require the gem.
 
-=== From the outside
+=== When you're executing this gem from OUTSIDE the cloud
 
-You need to provide...
+You must...
 
-* <tt>ENV['EY_CLOUD_TOKEN']</tt> or have <tt>~/.eyrc</tt>
-* <tt>ENV['REPOSITORY_URI']</tt> or execute the gem from the local copy of your application's repo.
+* have <tt>~/.eyrc</tt> or set <tt>EY::Metadata.ey_cloud_token=</tt> or set <tt>ENV['EY_CLOUD_TOKEN']</tt>.
+* execute the gem from the local copy of your application's repo or set <tt>EY::Metadata.environment_name=</tt> or set <tt>ENV['EY_ENVIRONMENT_NAME']</tt>.
 
 === Where the methods are defined
 

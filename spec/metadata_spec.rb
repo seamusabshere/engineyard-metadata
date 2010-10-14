@@ -56,6 +56,64 @@ shared_examples_for "all execution environments" do
   it 'gets the stack name' do
     EY::Metadata.stack_name.should == 'FAKE_STACK_NAME'
   end
+  
+  it 'gets the repository URI' do
+    EY::Metadata.repository_uri.should == 'FAKE_REPOSITORY_URI'
+  end
+end
+
+shared_examples_for "execution outside the cloud" do
+  it 'cannot get the present instance ID' do
+    lambda {
+      EY::Metadata.present_instance_id
+    }.should raise_error(EY::Metadata::CannotGetFromHere)
+  end
+
+  it 'cannot get the present instance role (as a string)' do
+    lambda {
+      EY::Metadata.present_instance_role
+    }.should raise_error(EY::Metadata::CannotGetFromHere)
+  end
+  
+  it 'cannot get the present public hostname' do
+    lambda {
+      EY::Metadata.present_public_hostname
+    }.should raise_error(EY::Metadata::CannotGetFromHere)
+  end
+  
+  it 'cannot get the present security group' do
+    lambda {
+      EY::Metadata.present_security_group
+    }.should raise_error(EY::Metadata::CannotGetFromHere)
+  end
+
+  it 'cannot get the database password' do
+    lambda {
+      EY::Metadata.database_password
+    }.should raise_error(EY::Metadata::CannotGetFromHere)
+  end
+
+  it 'cannot get the ssh password' do
+    lambda {
+      EY::Metadata.ssh_password
+    }.should raise_error(EY::Metadata::CannotGetFromHere)
+  end
+  
+  it 'cannot get the mysql command' do
+    lambda {
+      EY::Metadata.mysql_command
+    }.should raise_error(EY::Metadata::CannotGetFromHere)
+  end
+  
+  it 'cannot get the mysqldump command' do
+    lambda {
+      EY::Metadata.mysqldump_command
+    }.should raise_error(EY::Metadata::CannotGetFromHere)
+  end
+  
+  it 'gets the raw EngineYard Cloud API data' do
+    EY::Metadata.engine_yard_cloud_api.data.should be_a(Hash)
+  end
 end
 
 describe 'EY::Metadata' do
@@ -70,59 +128,25 @@ describe 'EY::Metadata' do
       stop_pretending
     end
     
-    it 'cannot get the present instance ID' do
-      lambda {
-        EY::Metadata.present_instance_id
-      }.should raise_error(EY::Metadata::CannotGetFromHere)
-    end
-
-    it 'cannot get the present instance role (as a string)' do
-      lambda {
-        EY::Metadata.present_instance_role
-      }.should raise_error(EY::Metadata::CannotGetFromHere)
+    describe "controlled with environment variables" do
+      before(:all) do
+        EY::Metadata.clear
+        ENV['EY_CLOUD_TOKEN'] = FAKE_CLOUD_TOKEN
+        ENV['EY_ENVIRONMENT_NAME'] = FAKE_ENVIRONMENT_NAME
+      end      
+      it_should_behave_like "all execution environments"
+      it_should_behave_like "execution outside the cloud"
     end
     
-    it 'cannot get the present public hostname' do
-      lambda {
-        EY::Metadata.present_public_hostname
-      }.should raise_error(EY::Metadata::CannotGetFromHere)
+    describe "controlled with attr writers" do
+      before(:all) do
+        EY::Metadata.clear
+        EY::Metadata.ey_cloud_token = FAKE_CLOUD_TOKEN
+        EY::Metadata.environment_name = FAKE_ENVIRONMENT_NAME
+      end
+      it_should_behave_like "all execution environments"
+      it_should_behave_like "execution outside the cloud"
     end
-    
-    it 'cannot get the present security group' do
-      lambda {
-        EY::Metadata.present_security_group
-      }.should raise_error(EY::Metadata::CannotGetFromHere)
-    end
-
-    it 'cannot get the database password' do
-      lambda {
-        EY::Metadata.database_password
-      }.should raise_error(EY::Metadata::CannotGetFromHere)
-    end
-
-    it 'cannot get the ssh password' do
-      lambda {
-        EY::Metadata.ssh_password
-      }.should raise_error(EY::Metadata::CannotGetFromHere)
-    end
-    
-    it 'cannot get the mysql command' do
-      lambda {
-        EY::Metadata.mysql_command
-      }.should raise_error(EY::Metadata::CannotGetFromHere)
-    end
-    
-    it 'cannot get the mysqldump command' do
-      lambda {
-        EY::Metadata.mysqldump_command
-      }.should raise_error(EY::Metadata::CannotGetFromHere)
-    end
-    
-    it 'gets the raw EngineYard Cloud API data' do
-      EY::Metadata.engine_yard_cloud_api.data.should be_a(Hash)
-    end
-
-    it_should_behave_like "all execution environments"
   end
   
   describe "being executed on an EngineYard AppCloud (i.e. Amazon EC2) instance" do

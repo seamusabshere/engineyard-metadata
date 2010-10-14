@@ -1,5 +1,3 @@
-require 'etc'
-require 'yaml'
 require 'rest' # from nap gem
 require 'active_support'
 require 'active_support/version'
@@ -98,7 +96,7 @@ module EY
           x['public_hostname']
         end
       end
-
+      
       # The name of the EngineYard AppCloud environment.
       def environment_name
         data['name']
@@ -109,41 +107,29 @@ module EY
         data['stack_name']
       end
       
-      # The secret API token to access https://cloud.engineyard.com
-      def ey_cloud_token
-        @ey_cloud_token ||= if ENV['EY_CLOUD_TOKEN'].to_s.strip.length > 0
-          ENV['EY_CLOUD_TOKEN']
-        elsif File.exist? EY::Metadata.eyrc_path
-          YAML.load(File.read(EY::Metadata.eyrc_path))['api_token']
-        else
-          raise RuntimeError, "[engineyard-metadata gem] You need to download #{eyrc_path} or set ENV['EY_CLOUD_TOKEN']"
-        end
+      # The git repository that you told EngineYard to use for this application.
+      def repository_uri
+        data['apps'][0]['repository_uri']
       end
       
-      # The URL that EngineYard has on file for your application.
-      def repository_uri
-        @repository_uri ||= if ENV['REPOSITORY_URI'].to_s.strip.length > 0
-          ENV['REPOSITORY_URI']
-        elsif File.exist? EY::Metadata.git_config_path
-          `git config --get remote.origin.url`.strip
-        else
-          raise RuntimeError, "[engineyard-metadata gem] You need to be inside a app's git repo or set ENV['REPOSITORY_URI']"
-        end
+      def data_loaded?
+        @data.is_a? Hash
       end
       
       def data
-        return @data if @data.is_a? Hash
-        raw_json = REST.get(URL, 'X-EY-Cloud-Token' => ey_cloud_token).body
+        return @data if data_loaded?
+        raw_json = REST.get(URL, 'X-EY-Cloud-Token' => EY::Metadata.ey_cloud_token).body
         raw_data = ActiveSupport::JSON.decode raw_json
-        catch :found_environment_by_repository_uri do
-          raw_data['environments'].each do |environment_hsh|
-            if environment_hsh['apps'].any? { |app_hsh| app_hsh['repository_uri'] == repository_uri }
-              @data = environment_hsh
-              throw :found_environment_by_repository_uri
-            end
+        matching_environment_hshs = raw_data['environments'].select do |environment_hsh|
+          if EY::Metadata.environment_name
+            environment_hsh['name'] == EY::Metadata.environment_name
+          else
+            environment_hsh['apps'].any? { |app_hsh| app_hsh['repository_uri'] == repository_uri }
           end
         end
-        raise RuntimeError, "[engineyard-metadata gem] Couldn't find an EngineYard environment with the repository uri #{repository_uri}" unless @data.is_a? Hash
+        raise RuntimeError, "[engineyard-metadata gem] Found too many environments: #{matching_environment_hshs.map { |hsh| hsh['name'] }.join(', ')}" if matching_environment_hshs.length > 1
+        @data = matching_environment_hshs[0]
+        raise RuntimeError, "[engineyard-metadata gem] Couldn't find an EngineYard environment with the repository uri #{repository_uri}" unless data_loaded?
         @data
       end
     end

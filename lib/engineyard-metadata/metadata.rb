@@ -28,6 +28,7 @@ module EY
       solo
       environment_name
       stack_name
+      repository_uri
     }
     
     # This gets raised when you can't get a particular piece of metadata from the execution environment you're in.

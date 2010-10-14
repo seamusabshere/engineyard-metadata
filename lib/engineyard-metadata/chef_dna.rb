@@ -40,6 +40,11 @@ module EY
       def database_name
         data['engineyard']['environment']['apps'][0]['database_name']
       end
+      
+      # The git repository that you told EngineYard to use for this application.
+      def repository_uri
+        data['engineyard']['environment']['apps'][0]['repository_name']
+      end
     
       # Public hostname where you should connect to the database.
       #
