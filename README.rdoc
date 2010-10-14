@@ -11,7 +11,7 @@ To define an unchanging interface to useful metadata (passwords, IP addresses, e
 * Get a dynamically updated list of all running app servers so that you can pool memcached over all of them. (<tt>EY::Metadata.app_servers</tt>)
 * Get the current database password so that you can write a script that connects to it. (<tt>EY::Metadata.database_password</tt>)
 
-Get the full method list in {the engineyard-metadata rdoc}[http://rdoc.info/github/seamusabshere/engineyard-metadata].
+Get the full method list in {the engineyard-metadata rdoc}[http://rubydoc.info/gems/engineyard-metadata].
 
 == Use
 
