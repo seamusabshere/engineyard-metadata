@@ -125,7 +125,7 @@ module EY
         @repository_uri ||= if ENV['REPOSITORY_URI'].to_s.strip.length > 0
           ENV['REPOSITORY_URI']
         elsif File.exist? EY::Metadata.git_config_path
-          `git config --get remote.origin.url`
+          `git config --get remote.origin.url`.strip
         else
           raise RuntimeError, "[engineyard-metadata gem] You need to be inside a app's git repo or set ENV['REPOSITORY_URI']"
         end
