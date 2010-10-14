@@ -11,9 +11,34 @@ To define an unchanging interface to useful metadata (passwords, IP addresses, e
 * Get a dynamically updated list of all running app servers so that you can pool memcached over all of them. (<tt>EY::Metadata.app_servers</tt>)
 * Get the current database password so that you can write a script that connects to it. (<tt>EY::Metadata.database_password</tt>)
 
-Get the full method list in {the engineyard-metadata rdoc}[http://rubydoc.info/gems/engineyard-metadata].
+Here's the current method list:
+
+  present_instance_id     (only works from cloud instances)
+  present_security_group  (only works from cloud instances)
+  present_instance_role   (only works from cloud instances)
+  present_public_hostname (only works from cloud instances)
+  database_password       (only works from cloud instances)
+  database_username
+  database_name
+  database_host
+  ssh_username
+  ssh_password            (only works from cloud instances)
+  app_servers
+  db_servers
+  utilities
+  app_master
+  db_master
+  mysql_command           (only works from cloud instances)
+  mysqldump_command       (only works from cloud instances)
+  app_slaves
+  db_slaves
+  solo
+  environment_name
+  stack_name
 
 == Use
+
+See the rdoc at {the engineyard-metadata rdoc}[http://rubydoc.info/gems/engineyard-metadata].
 
 === From the inside
 
