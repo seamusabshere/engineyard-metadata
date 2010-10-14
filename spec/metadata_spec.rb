@@ -1,12 +1,25 @@
 require 'spec_helper'
 
 describe EY do
+  before(:all) do
+    pretend_we_are_on_an_ec2_instance
+  end
+  after(:all) do
+    stop_pretending
+  end
   it 'has a FakeFS dna.json' do
     File.exist?('/etc/chef/dna.json').should == true
   end
 end
 
 describe EY::Metadata do
+  before(:all) do
+    pretend_we_are_on_an_ec2_instance
+  end
+  after(:all) do
+    stop_pretending
+  end
+
   it 'gets the present instance ID' do
     EY::Metadata.present_instance_id.should == PRESENT_INSTANCE_ID
   end
