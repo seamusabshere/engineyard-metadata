@@ -9,8 +9,20 @@ require 'fakefs/safe'
 PRESENT_PUBLIC_HOSTNAME = 'app_master.compute-1.amazonaws.com'
 PRESENT_SECURITY_GROUP = 'ey-data1_production-1-2-3'
 PRESENT_INSTANCE_ID = 'i-deadbeef'
+REPOSITORY_URI = 'FAKE_REPOSITORY_URI'
 
-def pretend_we_are_on_an_ec2_instance
+def pretend_we_are_on_a_developer_machine
+  ENV['REPOSITORY_URI'] = REPOSITORY_URI
+  FakeWeb.allow_net_connect = false
+  FakeWeb.register_uri  :get,
+                        "https://cloud.engineyard.com/api/v2/environments",
+                        :status => ["200", "OK"],
+                        :body => File.read(File.join(File.dirname(__FILE__), 'support', 'engine_yard_cloud_api_response.json'))
+  # FakeFS.activate!
+end
+
+
+def pretend_we_are_on_an_engineyard_appcloud_ec2_instance
   FakeWeb.allow_net_connect = false
   # fake call to amazon ec2 api to get present security group
   FakeWeb.register_uri  :get,
@@ -39,13 +51,3 @@ def stop_pretending
   FakeWeb.clean_registry
   FakeWeb.allow_net_connect = true
 end
-
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'engineyard-metadata'
-
-# Spec::Runner.configure do |config|
-#   config.before(:all) do
-#     
-#   end
-# end

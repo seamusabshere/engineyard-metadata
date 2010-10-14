@@ -1,0 +1,28 @@
+{"environments":
+	[
+		{"app_master":
+		{"public_hostname":"app_master.compute-1.amazonaws.com","name":null,"status":"running","amazon_id":"i-aaaaaaaa","role":"app_master","id":11111
+		},"ssh_username":"FAKE_SSH_USERNAME","stack_name":"FAKE_STACK_NAME","framework_env":"production","name":"FAKE_ENVIRONMENT_NAME","account":
+		{"name":"FAKE_ACCOUNT_NAME","id":12345
+		},"instances_count":5,"apps":
+		[
+		{"repository_uri":"FAKE_REPOSITORY_URI","name":"FAKE_APP_NAME","account":
+		{"name":"FAKE_ACCOUNT_NAME","id":12345
+		},"id":292301
+		}
+		],"id":382918,"instances":
+		[
+		{"public_hostname":"app_master.compute-1.amazonaws.com","name":null,"status":"running","amazon_id":"i-aaaaaaaa","role":"app_master","id":11111
+		},
+		{"public_hostname":"app_1.compute-1.amazonaws.com","name":null,"status":"running","amazon_id":"i-bbbbbbbb","role":"app","id":22222
+		},
+		{"public_hostname":"FAKE_DB_MASTER_PUBLIC_HOSTNAME","name":null,"status":"running","amazon_id":"i-cccccccc","role":"db_master","id":33333
+		},
+		{"public_hostname":"db_slave_1.compute-1.amazonaws.com","name":null,"status":"running","amazon_id":"i-cccccccc","role":"db_slave","id":44444
+		},
+		{"public_hostname":"FAKE_UTIL_1_PUBLIC_HOSTNAME","name":"data1_production_util1","status":"running","amazon_id":"i-dddddddd","role":"util","id":55555
+		}
+		]
+		}
+	]
+}

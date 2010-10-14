@@ -1,11 +1,13 @@
 module EY
+  # All methods are defined on this module. For example, you're supposed to say
+  #
+  #   EY::Metadata.database_username
+  #
+  # instead of trying to call it from a particular adapter.
   module Metadata
-    DELEGATED_TO_AMAZON_EC2_API = %w{
+    KEYS = %w{
       present_instance_id
       present_security_group
-    }
-        
-    DELEGATED_TO_CHEF_DNA = %w{
       present_instance_role
       present_public_hostname
       database_password
@@ -25,33 +27,24 @@ module EY
       db_slaves
       solo
       environment_name
+      stack_name
     }
     
-    DELEGATED_TO_AMAZON_EC2_API.each do |name|
-      EY::Metadata.send :define_method, name do
-        amazon_ec2_api.send name
-      end
+    # This gets raised when you can't get a particular piece of metadata from the execution environment you're in.
+    class CannotGetFromHere < RuntimeError
     end
     
-    DELEGATED_TO_CHEF_DNA.each do |name|
-      EY::Metadata.send :define_method, name do
-        chef_dna.send name
-      end
-    end
-
-    extend self
-    
+    autoload :Insider, 'engineyard-metadata/insider'
+    autoload :Outsider, 'engineyard-metadata/outsider'
     autoload :ChefDna, 'engineyard-metadata/chef_dna'
     autoload :AmazonEc2Api, 'engineyard-metadata/amazon_ec2_api'
+    autoload :EngineYardCloudApi, 'engineyard-metadata/engine_yard_cloud_api'
     
-    # An adapter that reads from the EngineYard AppCloud /etc/chef/dna.json file.
-    def chef_dna
-      @chef_dna ||= EY::Metadata::ChefDna.new
-    end
-    
-    # An adapter that reads from Amazon's EC2 API.
-    def amazon_ec2_api
-      @amazon_ec2_api ||= EY::Metadata::AmazonEc2Api.new
+    # this is a pretty sloppy way of detecting whether we're on ec2
+    if File.exist? '/etc/chef/dna.json'
+      extend Insider
+    else
+      extend Outsider
     end
   end
 end

@@ -2,6 +2,7 @@ require 'open-uri'
 
 module EY
   module Metadata
+    # An adapter that reads from Amazon EC2's metadata web service, which is only available from cloud instances.
     class AmazonEc2Api
       # The present instance's Amazon Ec2 instance id.
       def present_instance_id

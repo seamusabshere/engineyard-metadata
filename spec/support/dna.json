@@ -15,7 +15,7 @@
   "internal_ssh_private_key": "-----BEGIN RSA PRIVATE KEY-----\nPRIVATE-KEY\n-----END RSA PRIVATE KEY-----\n",
   "utility_instances": [
     {
-      "name": "APP-NAME_production_util_1",
+      "name": "FAKE_ENVIRONMENT_NAME_util_1",
       "hostname": "internal_util_1.compute-1.internal"
     }
   ],
@@ -77,7 +77,7 @@
       "vhosts": [
         {
           "name": "_",
-          "role": "APP-NAME_production"
+          "role": "FAKE_ENVIRONMENT_NAME"
         }
       ]
     }
@@ -86,15 +86,15 @@
   "users": [
     {
       "gid": "1000",
-      "username": "USERS-0-USERNAME",
+      "username": "FAKE_SSH_USERNAME",
       "uid": "1000",
       "comment": "",
       "password": "USERS-0-PASSWORD"
     }
   ],
   "environment": {
-    "name": "APP-NAME_production",
-    "stack": "nginx_passenger",
+    "name": "FAKE_ENVIRONMENT_NAME",
+    "stack": "FAKE_STACK_NAME",
     "framework_env": "production"
   },
   "master_app_server": {
@@ -107,7 +107,7 @@
       "name": "dev-libs/oniguruma"
     }
   ],
-  "db_host": "external_db_master.compute-1.amazonaws.com",
+  "db_host": "FAKE_DB_HOST",
   "haproxy": {
     "username": "HAPROXY-USERNAME",
     "password": "HAPROXY-PASSWORD"
@@ -116,12 +116,12 @@
     "environment": {
       "apps": [
         {
-          "name": "APP-NAME",
+          "name": "FAKE_APP_NAME",
           "newrelic": false,
           "components": [
 
           ],
-          "database_name": "APPS-0-DATABASE_NAME",
+          "database_name": "FAKE_APP_NAME",
           "migration_command": "rake db:migrate",
           "type": "rack",
           "repository_name": "APPS-0-REPOSITORY_NAME",
@@ -153,7 +153,7 @@
         }
       ],
       "aws_secret_key": "AWS-SECRET-KEY",
-      "name": "APP-NAME_production",
+      "name": "FAKE_ENVIRONMENT_NAME",
       "ssh_keys": [
 		    "ssh-rsa AAAAB3NzaC1yc2EAAAAB key-a",
 		    "ssh-rsa AAAAB3NzaC1yc2EAAAAB key-b",
@@ -192,7 +192,7 @@
         },
         {
           "name": null,
-          "public_hostname": "db_master.compute-1.amazonaws.com",
+          "public_hostname": "FAKE_DB_MASTER_PUBLIC_HOSTNAME",
           "components": [
             {
               "key": "ssmtp"
@@ -222,7 +222,7 @@
         },
         {
           "name": "foobarfoo",
-          "public_hostname": "util_1.compute-1.amazonaws.com",
+          "public_hostname": "FAKE_UTIL_1_PUBLIC_HOSTNAME",
           "components": [
             {
               "key": "ssmtp"
@@ -242,7 +242,7 @@
       "backup_interval": 24,
       "admin_ssh_key": "ssh-rsa AAAAB3NzaC1 ey-cloud-production\n",
       "internal_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAAB \n",
-      "ssh_username": "SSH-USERNAME",
+      "ssh_username": "FAKE_SSH_USERNAME",
       "internal_ssh_private_key": "-----BEGIN RSA PRIVATE KEY-----\nINTERNAL-SSH-PRIVATE-KEY\n-----END RSA PRIVATE KEY-----\n",
       "mailserver": "smtp.engineyard.com",
       "components": [
@@ -255,7 +255,7 @@
 
       ],
       "backup_window": 10,
-      "stack_name": "nginx_passenger",
+      "stack_name": "FAKE_STACK_NAME",
       "alert_email": "ALERT-EMAIL",
       "ssh_password": "SSH-PASSWORD",
       "db_stack_name": "mysql",

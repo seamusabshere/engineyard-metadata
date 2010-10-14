@@ -1,23 +1,34 @@
 = engineyard-metadata
 
-Pulls metadata from EC2 and EngineYard so that your EngineYard Cloud instances know about each other.
+Presents a simple, unchanging interface to get metadata about your EngineYard AppCloud instances running on Amazon EC2.
 
 == Purpose
 
-To define an unchanging interface to useful metadata (passwords, IP addresses, etc.) that is otherwise buried deep inside EngineYard's chef config files and EC2 API calls.
+To define an unchanging interface to useful metadata (passwords, IP addresses, etc.) that is otherwise buried deep inside EngineYard's chef config files and various API calls.
 
 == Examples
 
 * Get a dynamically updated list of all running app servers so that you can pool memcached over all of them. (<tt>EY::Metadata.app_servers</tt>)
 * Get the current database password so that you can write a script that connects to it. (<tt>EY::Metadata.database_password</tt>)
 
-== Use
-
 Get the full method list in {the engineyard-metadata rdoc}[http://rdoc.info/github/seamusabshere/engineyard-metadata].
 
-Metadata getters are defined directly on <tt>EY::Metadata</tt>. Even if EngineYard changes the structure of the config files or Amazon EC2's API changes, these methods will stay the same.
+== Use
 
-This only runs on EngineYard AppCloud instances (running on Amazon EC2).
+=== From the inside
+
+When you're executing the gem from your instances, you don't have to configure anything. Just require the gem.
+
+=== From the outside
+
+You need to provide...
+
+* <tt>ENV['EY_CLOUD_TOKEN']</tt> or have <tt>~/.eyrc</tt>
+* <tt>ENV['REPOSITORY_URI']</tt> or execute the gem from the local copy of your application's repo.
+
+=== Where the methods are defined
+
+Metadata getters are defined directly on <tt>EY::Metadata</tt> (which in turn delegates out to various adapters). Even if EngineYard changes the structure of the config files or Amazon EC2's API changes, these methods will stay the same.
 
   [...]
   >> require 'rubygems'
@@ -26,8 +37,6 @@ This only runs on EngineYard AppCloud instances (running on Amazon EC2).
   [...]
   >> EY::Metadata.database_host
   => "external_db_master.compute-1.amazonaws.com"
-  >> EY::Metadata.database_password
-  => "foobarfoo"
   >> EY::Metadata.app_servers
   => [ 'app_1.compute-1.amazonaws.com' , 'app_master.compute-1.amazonaws.com' ]
   >> EY::Metadata.db_servers
