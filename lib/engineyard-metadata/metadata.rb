@@ -41,11 +41,13 @@ module EY
     autoload :AmazonEc2Api, 'engineyard-metadata/amazon_ec2_api'
     autoload :EngineYardCloudApi, 'engineyard-metadata/engine_yard_cloud_api'
     
-    # this is a pretty sloppy way of detecting whether we're on ec2
-    if File.exist? '/etc/chef/dna.json'
-      extend Insider
-    else
-      extend Outsider
+    def self.reload
+      if File.directory? '/var/log/engineyard'
+        extend Insider
+      else
+        extend Outsider
+      end
     end
+    reload
   end
 end

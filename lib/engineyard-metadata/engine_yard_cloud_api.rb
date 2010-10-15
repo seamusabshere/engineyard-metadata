@@ -1,4 +1,5 @@
-require 'rest' # from nap gem
+gem 'nap' # gives you rest...
+require 'rest'
 require 'active_support'
 require 'active_support/version'
 %w{
@@ -124,7 +125,7 @@ module EY
           if EY::Metadata.environment_name
             environment_hsh['name'] == EY::Metadata.environment_name
           else
-            environment_hsh['apps'].any? { |app_hsh| app_hsh['repository_uri'] == repository_uri }
+            environment_hsh['apps'].any? { |app_hsh| app_hsh['repository_uri'] == EY::Metadata.repository_uri }
           end
         end
         raise RuntimeError, "[engineyard-metadata gem] Found too many environments: #{matching_environment_hshs.map { |hsh| hsh['name'] }.join(', ')}" if matching_environment_hshs.length > 1

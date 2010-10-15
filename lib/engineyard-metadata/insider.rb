@@ -21,6 +21,11 @@ module EY
         end
       end
       
+      def clear
+        @chef_dna = nil
+        @amazon_ec2_api = nil
+      end
+      
       # An adapter that reads from the EngineYard AppCloud /etc/chef/dna.json file.
       def chef_dna
         @chef_dna ||= ChefDna.new

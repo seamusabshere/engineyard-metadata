@@ -34,14 +34,14 @@ module EY
         @repository_uri = nil
         @environment_name = nil
         @ey_cloud_token = nil
-        @data = nil
+        @engine_yard_cloud_api = nil
       end
       
       def environment_name=(str)
         # clear this out in case it was inferred
         @repository_uri = nil
         # clear this out in case we're looking up a new environment
-        @data = nil
+        @engine_yard_cloud_api = nil
         @environment_name = str
       end
       
@@ -62,7 +62,7 @@ module EY
         # clear this out in case it was inferred
         @repository_uri = nil
         # clear this out in case we're looking up a new environment
-        @data = nil
+        @engine_yard_cloud_api = nil
         @ey_cloud_token = str
       end
 
@@ -88,10 +88,12 @@ module EY
         elsif ENV['EY_REPOSITORY_URI']
           ENV['EY_REPOSITORY_URI']
         elsif File.exist? git_config_path
-          `git config --get remote.origin.url`.strip
-        else
-          raise RuntimeError, "[engineyard-metadata gem] You need to be inside a app's git repo or set ENV['EY_REPOSITORY_URI']"
+          git_config = File.read git_config_path
+          git_config =~ /^\[remote.*?\burl = (.*?)\n/m
+          $1
         end
+        raise RuntimeError, "[engineyard-metadata gem] Please set EY::Metadata.environment_name= or set ENV['EY_ENVIRONMENT_NAME']" unless @repository_uri.to_s.strip.length > 0
+        @repository_uri
       end
 
       # An adapter that reads from the public EngineYard Cloud API (https://cloud.engineyard.com)

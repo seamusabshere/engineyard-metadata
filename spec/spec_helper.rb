@@ -1,7 +1,5 @@
 require 'rubygems'
 require 'rspec'
-# require 'ruby-debug'
-# assumes active-support 3
 require 'active_support/json/encoding'
 require 'fakeweb'
 require 'fakefs/safe'
@@ -18,9 +16,14 @@ def pretend_we_are_on_a_developer_machine
                         "https://cloud.engineyard.com/api/v2/environments",
                         :status => ["200", "OK"],
                         :body => File.read(File.join(File.dirname(__FILE__), 'support', 'engine_yard_cloud_api_response.json'))
-  # FakeFS.activate!
+  dot_git_config = File.read File.join(File.dirname(__FILE__), 'support', 'dot.git.config')
+  FakeFS.activate!
+  git_config_path = File.join Dir.pwd, '.git', 'config'
+  FileUtils.mkdir_p File.dirname(git_config_path)
+  File.open(git_config_path, 'w') do |f|
+    f.write dot_git_config
+  end
 end
-
 
 def pretend_we_are_on_an_engineyard_appcloud_ec2_instance
   FakeWeb.allow_net_connect = false
@@ -40,6 +43,7 @@ def pretend_we_are_on_an_engineyard_appcloud_ec2_instance
   dna_json = File.read File.join(File.dirname(__FILE__), 'support', 'dna.json')
   # ... then turn on the fakefs
   FakeFS.activate!
+  FileUtils.mkdir_p '/var/log/engineyard'
   FileUtils.mkdir_p '/etc/chef'
   File.open '/etc/chef/dna.json', 'w' do |f|
     f.write dna_json
@@ -47,7 +51,10 @@ def pretend_we_are_on_an_engineyard_appcloud_ec2_instance
 end
 
 def stop_pretending
+  # http://lukeredpath.co.uk/blog/using-fakefs-with-cucumber-features.html
+  FakeFS::FileSystem.clear
   FakeFS.deactivate!
   FakeWeb.clean_registry
-  FakeWeb.allow_net_connect = true
 end
+
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'engineyard-metadata'))
