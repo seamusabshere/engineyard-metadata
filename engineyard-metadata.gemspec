@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{engineyard-metadata}
-  s.version = "0.0.7"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Seamus Abshere"]
@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
      "spec/metadata_spec.rb",
      "spec/spec_helper.rb",
      "spec/support/dna.json",
+     "spec/support/dot.git.config",
      "spec/support/engine_yard_cloud_api_response.json"
   ]
   s.homepage = %q{http://github.com/seamusabshere/engineyard-metadata}
