@@ -113,7 +113,7 @@ module EY
       end
       
       def data_loaded?
-        @data.is_a? Hash
+        defined?(@data) and @data.is_a? Hash
       end
       
       def data

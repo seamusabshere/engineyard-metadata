@@ -54,6 +54,8 @@ module EY
         elsif ENV['EY_ENVIRONMENT_NAME']
           ENV['EY_ENVIRONMENT_NAME']
         end
+        raise RuntimeError, "[engineyard-metadata gem] You need to run this from the application repo, set EY::Metadata.environment_name= or set ENV['EY_ENVIRONMENT_NAME']" unless @environment_name.to_s.strip.length > 0
+        @environment_name
       end
       
       def ey_cloud_token=(str)
@@ -70,10 +72,10 @@ module EY
         @ey_cloud_token = if ENV['EY_CLOUD_TOKEN']
           ENV['EY_CLOUD_TOKEN']
         elsif File.exist? eyrc_path
-          YAML.load(File.read(eyrc_path))['ey_cloud_token']
-        else
-          raise RuntimeError, "[engineyard-metadata gem] You need to download #{eyrc_path} or set ENV['EY_CLOUD_TOKEN']"
+          YAML.load(File.read(eyrc_path))['api_token']
         end
+        raise RuntimeError, "[engineyard-metadata gem] You need to have #{eyrc_path}, set EY::Metadata.ey_cloud_token= or set ENV['EY_CLOUD_TOKEN']" unless @ey_cloud_token.to_s.strip.length > 0
+        @ey_cloud_token
       end
       
       # The URL that EngineYard has on file for your application.

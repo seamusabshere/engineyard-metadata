@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'spec'
+require 'rspec'
 # require 'ruby-debug'
 # assumes active-support 3
 require 'active_support/json/encoding'

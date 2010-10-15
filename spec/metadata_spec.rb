@@ -118,31 +118,44 @@ end
 
 describe 'EY::Metadata' do
   describe "being executed from a developer/administrator's local machine" do
-    before(:all) do
+    before do
       pretend_we_are_on_a_developer_machine
-      # forcibly reload metadata.rb, so that it can extend itself based on its execution environment
       load File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'engineyard-metadata', 'metadata.rb'))
+      EY::Metadata.clear
+      ENV.delete 'EY_CLOUD_TOKEN'
+      ENV.delete 'EY_ENVIRONMENT_NAME'
     end
-
-    after(:all) do
+    
+    after do
       stop_pretending
     end
     
     describe "controlled with environment variables" do
-      before(:all) do
-        EY::Metadata.clear
-        ENV['EY_CLOUD_TOKEN'] = FAKE_CLOUD_TOKEN
+      before do
+        ENV['EY_CLOUD_TOKEN'] = FAKE_CLOUD_TOKEN + 'aaa'
         ENV['EY_ENVIRONMENT_NAME'] = FAKE_ENVIRONMENT_NAME
-      end      
+        EY::Metadata.ey_cloud_token.should == FAKE_CLOUD_TOKEN + 'aaa' # sanity check
+      end
       it_should_behave_like "all execution environments"
       it_should_behave_like "execution outside the cloud"
     end
     
     describe "controlled with attr writers" do
-      before(:all) do
-        EY::Metadata.clear
-        EY::Metadata.ey_cloud_token = FAKE_CLOUD_TOKEN
+      before do
+        EY::Metadata.ey_cloud_token = FAKE_CLOUD_TOKEN + 'bbb'
         EY::Metadata.environment_name = FAKE_ENVIRONMENT_NAME
+        EY::Metadata.ey_cloud_token.should == FAKE_CLOUD_TOKEN + 'bbb' # sanity check
+      end
+      it_should_behave_like "all execution environments"
+      it_should_behave_like "execution outside the cloud"
+    end
+    
+    describe "depending on .eyrc" do
+      before do
+        FakeFS.activate!
+        File.open(EY::Metadata.eyrc_path, 'w') { |f| f.write({'api_token' => FAKE_CLOUD_TOKEN + 'ccc'}.to_yaml) }
+        EY::Metadata.environment_name = FAKE_ENVIRONMENT_NAME
+        EY::Metadata.ey_cloud_token.should == FAKE_CLOUD_TOKEN + 'ccc' # sanity check
       end
       it_should_behave_like "all execution environments"
       it_should_behave_like "execution outside the cloud"
@@ -150,13 +163,12 @@ describe 'EY::Metadata' do
   end
   
   describe "being executed on an EngineYard AppCloud (i.e. Amazon EC2) instance" do
-    before(:all) do
+    before do
       pretend_we_are_on_an_engineyard_appcloud_ec2_instance
-        # forcibly reload metadata.rb, so that it can extend itself based on its execution environment
       load File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'engineyard-metadata', 'metadata.rb'))
     end
     
-    after(:all) do
+    after do
       stop_pretending
     end
     

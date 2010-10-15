@@ -14,7 +14,7 @@ begin
     gem.add_dependency 'nap', '>=0.4'
     gem.add_development_dependency "fakeweb"
     gem.add_development_dependency "fakefs"
-    gem.add_development_dependency "rspec", "~>1"
+    gem.add_development_dependency "rspec", "~>2"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
