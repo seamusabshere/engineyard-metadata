@@ -29,6 +29,7 @@ module EY
       environment_name
       stack_name
       repository_uri
+      environment_names
     } unless defined?(KEYS)
     
     # This gets raised when you can't get a particular piece of metadata from the execution environment you're in.

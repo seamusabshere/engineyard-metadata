@@ -112,24 +112,37 @@ module EY
       def repository_uri
         data['apps'][0]['repository_uri']
       end
+
+      # A list of all the environment names belonging to this account.
+      def environment_names
+        environments.map { |environment| environment['name'] }
+      end
       
+      # Used internally to determine whether we've decoded the API response yet.
       def data_loaded?
         defined?(@data) and @data.is_a? Hash
       end
       
-      def data
-        return @data if data_loaded?
+      # Used internally to store the full list of environments that the API gives us.
+      def environments
+        return @environments if @environments.is_a? Array
         raw_json = REST.get(URL, 'X-EY-Cloud-Token' => EY::Metadata.ey_cloud_token).body
         raw_data = ActiveSupport::JSON.decode raw_json
-        matching_environment_hshs = raw_data['environments'].select do |environment_hsh|
+        @environments = raw_data['environments']
+      end
+      
+      # Used internally to store data about the specific environment we're working with.
+      def data
+        return @data if data_loaded?
+        matching_environments = environments.select do |environment|
           if EY::Metadata.environment_name
-            environment_hsh['name'] == EY::Metadata.environment_name
+            environment['name'] == EY::Metadata.environment_name
           else
-            environment_hsh['apps'].any? { |app_hsh| app_hsh['repository_uri'] == EY::Metadata.repository_uri }
+            environment['apps'].any? { |app| app['repository_uri'] == EY::Metadata.repository_uri }
           end
         end
-        raise RuntimeError, "[engineyard-metadata gem] Found too many environments: #{matching_environment_hshs.map { |hsh| hsh['name'] }.join(', ')}" if matching_environment_hshs.length > 1
-        @data = matching_environment_hshs[0]
+        raise RuntimeError, "[engineyard-metadata gem] Found too many environments: #{matching_environments.map { |environment| environments['name'] }.join(', ')}" if matching_environments.length > 1
+        @data = matching_environments[0]
         raise RuntimeError, "[engineyard-metadata gem] Couldn't find an EngineYard environment with the repository uri #{repository_uri}" unless data_loaded?
         @data
       end

@@ -26,6 +26,11 @@ module EY
         @amazon_ec2_api = nil
       end
       
+      # You can't get the list of environment names while you're on the instances themselves.
+      def environment_names
+        raise CannotGetFromHere
+      end
+      
       # An adapter that reads from the EngineYard AppCloud /etc/chef/dna.json file.
       def chef_dna
         @chef_dna ||= ChefDna.new

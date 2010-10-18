@@ -69,6 +69,11 @@ Metadata getters are defined directly on <tt>EY::Metadata</tt> (which in turn de
   => [ 'db_master.compute-1.amazonaws.com', 'db_slave_1.compute-1.amazonaws.com' ]
   [...and many more...]
 
+== Known issues
+
+* It's not always clear what environment you're running in. For example, you say <tt>EY::Metadata.something</tt> and you're just supposed to know what environment you're in. You can use <tt>.environment_name=</tt>, but you might not remember.
+* There are no factory methods. If we fully fleshed this out, it might be like <tt>my_env = EY::Environment.find('my_env')</tt> and <tt>my_app_master = my_env.app_master</tt>. Not sure that complexity would add a lot of value.
+
 == History
 
 This is the second generation of http://rubygems.org/gems/ey_cloud_awareness.

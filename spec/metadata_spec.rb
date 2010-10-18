@@ -63,6 +63,10 @@ shared_examples_for "it does in all execution environments" do
 end
 
 shared_examples_for "it's executing outside the cloud" do
+  it 'gets the list of all environment names' do
+    EY::Metadata.environment_names.should == [ 'WRONG_ENVIRONMENT_NAME', 'FAKE_ENVIRONMENT_NAME' ]
+  end
+
   it 'not get the present instance ID' do
     lambda {
       EY::Metadata.present_instance_id
@@ -117,6 +121,12 @@ shared_examples_for "it's executing outside the cloud" do
 end
 
 shared_examples_for "it's executing inside the cloud" do
+  it 'not get the list of all environment names' do
+    lambda {
+      EY::Metadata.environment_names
+    }.should raise_error(EY::Metadata::CannotGetFromHere)
+  end
+  
   it 'get the present instance ID' do
     EY::Metadata.present_instance_id.should == PRESENT_INSTANCE_ID
   end
