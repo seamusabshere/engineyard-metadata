@@ -13,29 +13,33 @@ To define an unchanging interface to useful metadata (passwords, IP addresses, e
 
 Here's the current method list:
 
-  EY::Metadata.present_instance_id     (only works from cloud instances)
-  EY::Metadata.present_security_group  (only works from cloud instances)
-  EY::Metadata.present_instance_role   (only works from cloud instances)
-  EY::Metadata.present_public_hostname (only works from cloud instances)
-  EY::Metadata.database_password       (only works from cloud instances)
-  EY::Metadata.database_username
-  EY::Metadata.database_name
-  EY::Metadata.database_host
-  EY::Metadata.ssh_username
-  EY::Metadata.ssh_password            (only works from cloud instances)
-  EY::Metadata.app_servers
-  EY::Metadata.db_servers
-  EY::Metadata.utilities
-  EY::Metadata.app_master
-  EY::Metadata.db_master
-  EY::Metadata.mysql_command           (only works from cloud instances)
-  EY::Metadata.mysqldump_command       (only works from cloud instances)
-  EY::Metadata.app_slaves
-  EY::Metadata.db_slaves
-  EY::Metadata.solo
-  EY::Metadata.environment_name
-  EY::Metadata.stack_name
-  EY::Metadata.repository_uri
+	EY::Metadata.app_master
+	EY::Metadata.app_name
+	EY::Metadata.app_servers
+	EY::Metadata.app_slaves
+	EY::Metadata.current_path
+	EY::Metadata.database_host
+	EY::Metadata.database_name
+	EY::Metadata.database_password       (only works from cloud instances)
+	EY::Metadata.database_username
+	EY::Metadata.db_master
+	EY::Metadata.db_servers
+	EY::Metadata.db_slaves
+	EY::Metadata.environment_name
+	EY::Metadata.mysql_command           (only works from cloud instances)
+	EY::Metadata.mysqldump_command       (only works from cloud instances)
+	EY::Metadata.present_instance_id     (only works from cloud instances)
+	EY::Metadata.present_instance_role   (only works from cloud instances)
+	EY::Metadata.present_public_hostname (only works from cloud instances)
+	EY::Metadata.present_security_group  (only works from cloud instances)
+	EY::Metadata.repository_uri
+	EY::Metadata.shared_path
+	EY::Metadata.solo
+	EY::Metadata.ssh_aliases
+	EY::Metadata.ssh_password            (only works from cloud instances)
+	EY::Metadata.ssh_username
+	EY::Metadata.stack_name
+	EY::Metadata.utilities
 
 == Use
 
@@ -69,8 +73,24 @@ Metadata getters are defined directly on <tt>EY::Metadata</tt> (which in turn de
   => [ 'db_master.compute-1.amazonaws.com', 'db_slave_1.compute-1.amazonaws.com' ]
   [...and many more...]
 
+== SSH alias helper
+
+You can put the output of <tt>ey_ssh_aliases</tt> into <tt>~/.ssh/config</tt>:
+
+	$ EY_ENVIRONMENT_NAME=my_env ey_ssh_aliases 
+	Host my_env-app_master
+	  Hostname ec2-11-11-111-11.compute-1.amazonaws.com
+	  User deploy
+	  StrictHostKeyChecking no
+
+	Host my_env-db_master
+	  Hostname ec2-111-11-11-11.compute-1.amazonaws.com
+	  User deploy
+	  StrictHostKeyChecking no
+
 == Known issues
 
+* Doesn't work with multiple apps per environment.
 * It's not always clear what environment you're running in. For example, you say <tt>EY::Metadata.something</tt> and you're just supposed to know what environment you're in. You can use <tt>.environment_name=</tt>, but you might not remember.
 * There are no factory methods. If we fully fleshed this out, it might be like <tt>my_env = EY::Environment.find('my_env')</tt> and <tt>my_app_master = my_env.app_master</tt>. Not sure that complexity would add a lot of value.
 

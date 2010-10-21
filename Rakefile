@@ -15,6 +15,7 @@ begin
     gem.add_development_dependency "fakeweb"
     gem.add_development_dependency "fakefs"
     gem.add_development_dependency "rspec", "~>2"
+    gem.executables = ['ey_ssh_aliases']
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

@@ -16,6 +16,8 @@ module EY
     class EngineYardCloudApi
       URL = 'https://cloud.engineyard.com/api/v2/environments'
       
+      include SshAliasHelper
+      
       # Currently the same as the SSH username.
       def database_username
         data['ssh_username']
@@ -28,9 +30,9 @@ module EY
       
       # Currently the same as the app name, at least for recently-created environments.
       #
-      # It used to be named after the environment.
+      # This is less reliable that the answer you would get running from an instance, because databases used to be named after environments.
       def database_name
-        data['apps'][0]['name']
+        app_name
       end
       
       # The hostname of the database host.
@@ -116,6 +118,23 @@ module EY
       # A list of all the environment names belonging to this account.
       def environment_names
         environments.map { |environment| environment['name'] }
+      end
+      
+      # The name of the single app that runs in this environment.
+      #
+      # Warning: this gem currently doesn't support multiple apps per environment.
+      def app_name
+        data['apps'][0]['name']
+      end
+      
+      # The path to the current deploy on app servers.
+      def current_path
+        "/data/#{app_name}/current"
+      end
+      
+      # The path to the shared directory on app servers.
+      def shared_path
+        "/data/#{app_name}/shared"
       end
       
       # Used internally to determine whether we've decoded the API response yet.

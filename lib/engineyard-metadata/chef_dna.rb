@@ -12,6 +12,8 @@ module EY
     class ChefDna
       PATH = '/etc/chef/dna.json'
 
+      include SshAliasHelper
+
       def data # :nodoc:
         @data ||= ActiveSupport::JSON.decode File.read(PATH)
       end
@@ -45,7 +47,24 @@ module EY
       def repository_uri
         data['engineyard']['environment']['apps'][0]['repository_name']
       end
-    
+      
+      # The name of the single app that runs in this environment.
+      #
+      # Warning: this gem currently doesn't support multiple apps per environment.
+      def app_name
+        data['engineyard']['environment']['apps'][0]['name']
+      end
+      
+      # The path to the current deploy on app servers.
+      def current_path
+        "/data/#{app_name}/current"
+      end
+      
+      # The path to the shared directory on app servers.
+      def shared_path
+        "/data/#{app_name}/shared"
+      end
+
       # Public hostname where you should connect to the database.
       #
       # Currently the db master public hostname.

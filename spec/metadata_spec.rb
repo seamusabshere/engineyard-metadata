@@ -60,6 +60,22 @@ shared_examples_for "it does in all execution environments" do
   it 'get the repository URI' do
     EY::Metadata.repository_uri.should == 'FAKE_REPOSITORY_URI'
   end
+  
+  it 'gets the app name' do
+    EY::Metadata.app_name.should == 'FAKE_APP_NAME'
+  end
+  
+  it 'gets the current path' do
+    EY::Metadata.current_path.should == '/data/FAKE_APP_NAME/current'
+  end
+  
+  it 'gets the shared path' do
+    EY::Metadata.shared_path.should == '/data/FAKE_APP_NAME/shared'
+  end
+  
+  it 'gets helpful ssh aliases' do
+    EY::Metadata.ssh_aliases.should =~ /Host FAKE_ENVIRONMENT_NAME-app_master\n  Hostname app_master.compute-1.amazonaws.com/
+  end
 end
 
 shared_examples_for "it's executing outside the cloud" do
