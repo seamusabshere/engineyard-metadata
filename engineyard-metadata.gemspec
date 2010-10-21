@@ -5,13 +5,15 @@
 
 Gem::Specification.new do |s|
   s.name = %q{engineyard-metadata}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Seamus Abshere"]
-  s.date = %q{2010-10-18}
+  s.date = %q{2010-10-21}
+  s.default_executable = %q{ey_ssh_aliases}
   s.description = %q{Pulls metadata from EC2 and EngineYard so that your EngineYard AppCloud (Amazon EC2) instances know about each other.}
   s.email = %q{seamus@abshere.net}
+  s.executables = ["ey_ssh_aliases"]
   s.extra_rdoc_files = [
     "LICENSE",
      "README.rdoc"
@@ -23,6 +25,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "bin/ey_ssh_aliases",
      "engineyard-metadata.gemspec",
      "lib/engineyard-metadata.rb",
      "lib/engineyard-metadata/amazon_ec2_api.rb",
@@ -31,6 +34,7 @@ Gem::Specification.new do |s|
      "lib/engineyard-metadata/insider.rb",
      "lib/engineyard-metadata/metadata.rb",
      "lib/engineyard-metadata/outsider.rb",
+     "lib/engineyard-metadata/ssh_alias_helper.rb",
      "spec/metadata_spec.rb",
      "spec/spec_helper.rb",
      "spec/support/dna.json",
