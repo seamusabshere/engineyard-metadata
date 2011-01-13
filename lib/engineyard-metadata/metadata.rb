@@ -1,11 +1,17 @@
+require 'singleton'
+
 module EY
   # All methods are defined on this module. For example, you're supposed to say
   #
   #   EY::Metadata.database_username
   #
   # instead of trying to call it from a particular adapter.
-  module Metadata
-    KEYS = %w{
+  class Metadata
+    include Singleton
+    
+    attr_writer :app_name
+    
+    METHODS = %w{
       app_master
       app_name
       app_servers
@@ -34,7 +40,17 @@ module EY
       ssh_username
       stack_name
       utilities
-    } unless defined?(KEYS)
+    } unless defined?(METHODS)
+    
+    # The path to the current deploy on app servers.
+    def current_path
+      "/data/#{app_name}/current"
+    end
+    
+    # The path to the shared directory on app servers.
+    def shared_path
+      "/data/#{app_name}/shared"
+    end
     
     # This gets raised when you can't get a particular piece of metadata from the execution environment you're in.
     class CannotGetFromHere < RuntimeError
@@ -48,13 +64,14 @@ module EY
     autoload :AmazonEc2Api, 'engineyard-metadata/amazon_ec2_api'
     autoload :EngineYardCloudApi, 'engineyard-metadata/engine_yard_cloud_api'
     
-    def self.reload
+    def reload
       if File.directory? '/var/log/engineyard'
-        extend Insider
+        Metadata.send :include, Insider
       else
-        extend Outsider
+        Metadata.send :include, Outsider
       end
     end
-    reload
   end
 end
+
+EY.metadata.reload

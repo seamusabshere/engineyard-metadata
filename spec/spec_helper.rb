@@ -3,12 +3,11 @@ require 'rspec'
 require 'active_support/json/encoding'
 require 'fakeweb'
 require 'fakefs/safe'
+require 'eat' # otherwise it's loaded when fakefs is already active
 
-PRESENT_PUBLIC_HOSTNAME = 'app_master.compute-1.amazonaws.com'
-PRESENT_SECURITY_GROUP = 'ey-data1_production-1-2-3'
-PRESENT_INSTANCE_ID = 'i-deadbeef'
-FAKE_CLOUD_TOKEN = 'FAKE_EY_CLOUD_TOKEN'
-FAKE_ENVIRONMENT_NAME = 'FAKE_ENVIRONMENT_NAME'
+FAKE_SECURITY_GROUP = 'ey-cm1_production_blue-1294775925-1371-55979'
+FAKE_INSTANCE_ID = 'i-ff17d493'
+FAKE_CLOUD_TOKEN = 'justareallygreatsecret'
 
 def pretend_we_are_on_a_developer_machine
   FakeWeb.allow_net_connect = false
@@ -31,13 +30,13 @@ def pretend_we_are_on_an_engineyard_appcloud_ec2_instance
   FakeWeb.register_uri  :get,
                         "http://169.254.169.254/latest/meta-data/security-groups",
                         :status => ["200", "OK"],
-                        :body => PRESENT_SECURITY_GROUP
+                        :body => FAKE_SECURITY_GROUP
 
   # fake call to amazon ec2 api to get present instance id
   FakeWeb.register_uri  :get,
                         "http://169.254.169.254/latest/meta-data/instance-id",
                         :status => ["200", "OK"],
-                        :body => PRESENT_INSTANCE_ID
+                        :body => FAKE_INSTANCE_ID
 
   # first read a file from the real file system...
   dna_json = File.read File.join(File.dirname(__FILE__), 'support', 'dna.json')

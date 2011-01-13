@@ -1,40 +1,34 @@
-{"environments":
-	[
-		{"app_master":
-		{"public_hostname":"app_master.compute-1.amazonaws.com","name":null,"status":"running","amazon_id":"i-aaaaaaaa","role":"app_master","id":11111
-		},"ssh_username":"WRONG_SSH_USERNAME","stack_name":"WRONG_STACK_NAME","framework_env":"production","name":"WRONG_ENVIRONMENT_NAME","account":
-		{"name":"WRONG_ACCOUNT_NAME","id":12345
-		},"instances_count":0,"apps":
-		[
-		{"repository_uri":"FAKE_REPOSITORY_URI","name":"WRONG_APP_NAME","account":
-		{"name":"WRONG_ACCOUNT_NAME","id":12345
-		},"id":292301
-		}
-		],"id":382918,"instances":[]
-		},
-		{"app_master":
-		{"public_hostname":"app_master.compute-1.amazonaws.com","name":null,"status":"running","amazon_id":"i-aaaaaaaa","role":"app_master","id":11111
-		},"ssh_username":"FAKE_SSH_USERNAME","stack_name":"FAKE_STACK_NAME","framework_env":"production","name":"FAKE_ENVIRONMENT_NAME","account":
-		{"name":"FAKE_ACCOUNT_NAME","id":12345
-		},"instances_count":5,"apps":
-		[
-		{"repository_uri":"FAKE_REPOSITORY_URI","name":"FAKE_APP_NAME","account":
-		{"name":"FAKE_ACCOUNT_NAME","id":12345
-		},"id":292301
-		}
-		],"id":382918,"instances":
-		[
-		{"public_hostname":"app_master.compute-1.amazonaws.com","name":null,"status":"running","amazon_id":"i-aaaaaaaa","role":"app_master","id":11111
-		},
-		{"public_hostname":"app_1.compute-1.amazonaws.com","name":null,"status":"running","amazon_id":"i-bbbbbbbb","role":"app","id":22222
-		},
-		{"public_hostname":"FAKE_DB_MASTER_PUBLIC_HOSTNAME","name":null,"status":"running","amazon_id":"i-cccccccc","role":"db_master","id":33333
-		},
-		{"public_hostname":"db_slave_1.compute-1.amazonaws.com","name":null,"status":"running","amazon_id":"i-cccccccc","role":"db_slave","id":44444
-		},
-		{"public_hostname":"FAKE_UTIL_1_PUBLIC_HOSTNAME","name":"data1_production_util1","status":"running","amazon_id":"i-dddddddd","role":"util","id":55555
-		}
-		]
-		}
-	]
+{"environments":[{"framework_env":"production","name":"app1_production","account":{"name":"Brighter-Planet-Inc","id":1441}
+,"instances":[],"instances_count":0,"apps":[{"name":"app1","account":{"name":"Brighter-Planet-Inc","id":1441}
+,"repository_uri":"git@github.com:brighterplanet/app1.git","id":1875}
+],"ssh_username":"brighterplanet","stack_name":"nginx_passenger","id":2860,"app_master":null}
+,{"framework_env":"production","name":"wlpf1_production","account":{"name":"Brighter-Planet-Inc","id":1441}
+,"instances":[],"instances_count":0,"apps":[{"name":"wlpf1","account":{"name":"Brighter-Planet-Inc","id":1441}
+,"repository_uri":"git@github.com:brighterplanet/wlpf1.git","id":3421}
+],"ssh_username":"deploy","stack_name":"nginx_passenger","id":4672,"app_master":null}
+,{"framework_env":"production","name":"data1_production","account":{"name":"Brighter-Planet-Inc","id":1441}
+,"instances":[{"amazon_id":"i-b8bf3bd5","public_hostname":"ec2-184-73-240-97.compute-1.amazonaws.com","status":"running","name":null,"role":"app_master","id":58142}
+,{"amazon_id":"i-bcbf3bd1","public_hostname":"ec2-75-101-179-251.compute-1.amazonaws.com","status":"running","name":null,"role":"db_master","id":58143}
+,{"amazon_id":"i-bebf3bd3","public_hostname":"ec2-174-129-70-51.compute-1.amazonaws.com","status":"running","name":"data1_production_util1","role":"util","id":58144}
+],"instances_count":3,"apps":[{"name":"data1","account":{"name":"Brighter-Planet-Inc","id":1441}
+,"repository_uri":"git@github.com:brighterplanet/data1.git","id":7934}
+],"ssh_username":"deploy","stack_name":"nginx_passenger","id":11391,"app_master":{"amazon_id":"i-b8bf3bd5","public_hostname":"ec2-184-73-240-97.compute-1.amazonaws.com","status":"running","name":null,"role":"app_master","id":58142}
 }
+,{"framework_env":"production","name":"cm1_production_red","account":{"name":"Brighter-Planet-Inc","id":1441}
+,"instances":[{"amazon_id":"i-ede41681","public_hostname":"ec2-184-73-240-13.compute-1.amazonaws.com","status":"running","name":null,"role":"app_master","id":67064}
+,{"amazon_id":"i-e7e4168b","public_hostname":"ec2-50-16-32-84.compute-1.amazonaws.com","status":"running","name":null,"role":"db_master","id":67065}
+],"instances_count":2,"apps":[{"name":"cm1_red","account":{"name":"Brighter-Planet-Inc","id":1441}
+,"repository_uri":"git@github.com:brighterplanet/cm1.git","id":9181}
+],"ssh_username":"deploy","stack_name":"nginx_unicorn","id":13520,"app_master":{"amazon_id":"i-ede41681","public_hostname":"ec2-184-73-240-13.compute-1.amazonaws.com","status":"running","name":null,"role":"app_master","id":67064}
+}
+,{"framework_env":"production","name":"cm1_production_blue","account":{"name":"Brighter-Planet-Inc","id":1441}
+,"instances":[{"amazon_id":"i-ff17d493","public_hostname":"ec2-174-129-212-130.compute-1.amazonaws.com","status":"running","name":null,"role":"app_master","id":67924}
+,{"amazon_id":"i-f917d495","public_hostname":"ec2-67-202-19-255.compute-1.amazonaws.com","status":"running","name":null,"role":"db_master","id":67925}
+],"instances_count":2,"apps":[{"name":"cm1_certified_blue","account":{"name":"Brighter-Planet-Inc","id":1441}
+,"repository_uri":"git@github.com:brighterplanet/cm1.git","id":10028}
+,{"name":"cm1_master_blue","account":{"name":"Brighter-Planet-Inc","id":1441}
+,"repository_uri":"git@github.com:brighterplanet/cm1.git","id":10029}
+],"ssh_username":"deploy","stack_name":"nginx_unicorn","id":14845,"app_master":{"amazon_id":"i-ff17d493","public_hostname":"ec2-174-129-212-130.compute-1.amazonaws.com","status":"running","name":null,"role":"app_master","id":67924}
+}
+]}
+

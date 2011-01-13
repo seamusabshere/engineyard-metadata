@@ -1,5 +1,5 @@
 module EY
-  module Metadata
+  class Metadata
     module SshAliasHelper
       # Aliases like 'my_env-app_master' or 'my_env-utilities-5' that go in .ssh/config
       #

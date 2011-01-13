@@ -12,6 +12,7 @@ begin
     gem.authors = ["Seamus Abshere"]
     gem.add_dependency 'activesupport', '>=2.3.4'
     gem.add_dependency 'nap', '>=0.4'
+    gem.add_dependency 'eat'
     gem.add_development_dependency "fakeweb"
     gem.add_development_dependency "fakefs"
     gem.add_development_dependency "rspec", "~>2"

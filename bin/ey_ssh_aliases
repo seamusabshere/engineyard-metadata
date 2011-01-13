@@ -3,4 +3,4 @@ unless RUBY_VERSION >= '1.9'
 	require 'rubygems'
 end
 require 'engineyard-metadata'
-puts EY::Metadata.ssh_aliases
+puts EY.metadata.ssh_aliases

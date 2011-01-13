@@ -7,62 +7,49 @@ require 'active_support/version'
 end if ActiveSupport::VERSION::MAJOR == 3
 
 module EY
-  module Metadata
+  class Metadata
     # An adapter that reads from /etc/chef/dna.json, which is only available on cloud instances.
     class ChefDna
       PATH = '/etc/chef/dna.json'
 
       include SshAliasHelper
 
-      def data # :nodoc:
-        @data ||= ActiveSupport::JSON.decode File.read(PATH)
+      def dna # :nodoc:
+        @dna ||= ActiveSupport::JSON.decode File.read(PATH)
+      end
+      
+      def application # :nodoc:
+        dna['engineyard']['environment']['apps'].detect { |a| a['name'] == EY.metadata.app_name }
       end
   
       # The present instance's role
       def present_instance_role
-        data['instance_role']
+        dna['instance_role']
       end
     
       # The present instance's public hostname.
       def present_public_hostname
-        data['engineyard']['environment']['instances'].detect { |i| i['id'] == EY::Metadata.present_instance_id }['public_hostname']
+        dna['engineyard']['environment']['instances'].detect { |i| i['id'] == EY.metadata.present_instance_id }['public_hostname']
       end
   
       # Currently the same as the SSH password.
       def database_password
-        data['users'][0]['password']
+        dna['users'][0]['password']
       end
     
       # Currently the same as the SSH username.
       def database_username
-        data['users'][0]['username']
+        dna['users'][0]['username']
       end
     
       # For newly deployed applications, equal to the application name.
       def database_name
-        data['engineyard']['environment']['apps'][0]['database_name']
+        application['database_name']
       end
       
       # The git repository that you told EngineYard to use for this application.
       def repository_uri
-        data['engineyard']['environment']['apps'][0]['repository_name']
-      end
-      
-      # The name of the single app that runs in this environment.
-      #
-      # Warning: this gem currently doesn't support multiple apps per environment.
-      def app_name
-        data['engineyard']['environment']['apps'][0]['name']
-      end
-      
-      # The path to the current deploy on app servers.
-      def current_path
-        "/data/#{app_name}/current"
-      end
-      
-      # The path to the shared directory on app servers.
-      def shared_path
-        "/data/#{app_name}/shared"
+        application['repository_name']
       end
 
       # Public hostname where you should connect to the database.
@@ -74,50 +61,50 @@ module EY
   
       # SSH username.
       def ssh_username
-        data['engineyard']['environment']['ssh_username']
+        dna['engineyard']['environment']['ssh_username']
       end
     
       # SSH password.
       def ssh_password
-        data['engineyard']['environment']['ssh_password']
+        dna['engineyard']['environment']['ssh_password']
       end
   
       # The public hostnames of all the app servers.
       #
       # If you're on a solo app, it counts the solo as an app server.
       def app_servers
-        data['engineyard']['environment']['instances'].select { |i| %w{ app_master app solo }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+        dna['engineyard']['environment']['instances'].select { |i| %w{ app_master app solo }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
       end
     
       # The public hostnames of all the app slaves.
       def app_slaves
-        data['engineyard']['environment']['instances'].select { |i| %w{ app }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+        dna['engineyard']['environment']['instances'].select { |i| %w{ app }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
       end
   
       # The public hostnames of all the db servers.
       #
       # If you're on a solo app, it counts the solo as a db server.
       def db_servers
-        data['engineyard']['environment']['instances'].select { |i| %w{ db_master db_slave solo }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+        dna['engineyard']['environment']['instances'].select { |i| %w{ db_master db_slave solo }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
       end
   
       # The public hostnames of all the db slaves.
       def db_slaves
-        data['engineyard']['environment']['instances'].select { |i| %w{ db_slave }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+        dna['engineyard']['environment']['instances'].select { |i| %w{ db_slave }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
       end
   
       # The public hostnames of all the utility servers.
       #
       # If you're on a solo app, it counts the solo as a utility.
       def utilities
-        data['engineyard']['environment']['instances'].select { |i| %w{ util solo }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+        dna['engineyard']['environment']['instances'].select { |i| %w{ util solo }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
       end
   
       # The public hostname of the app_master.
       #
       # If you're on a solo app, it counts the solo as the app_master.
       def app_master
-        if x = data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'app_master' }
+        if x = dna['engineyard']['environment']['instances'].detect { |i| i['role'] == 'app_master' }
           x['public_hostname']
         else
           solo
@@ -128,7 +115,7 @@ module EY
       #
       # If you're on a solo app, it counts the solo as the app_master.
       def db_master
-        if x = data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'db_master' }
+        if x = dna['engineyard']['environment']['instances'].detect { |i| i['role'] == 'db_master' }
           x['public_hostname']
         else
           solo
@@ -137,7 +124,7 @@ module EY
     
       # The public hostname of the solo.
       def solo
-        if x = data['engineyard']['environment']['instances'].detect { |i| i['role'] == 'solo' }
+        if x = dna['engineyard']['environment']['instances'].detect { |i| i['role'] == 'solo' }
           x['public_hostname']
         end
       end
@@ -154,12 +141,12 @@ module EY
     
       # The name of the EngineYard AppCloud environment.
       def environment_name
-        data['environment']['name']
+        dna['environment']['name']
       end
       
       # The stack in use, like nginx_passenger.
       def stack_name
-        data['engineyard']['environment']['stack_name']
+        dna['engineyard']['environment']['stack_name']
       end
     end
   end
