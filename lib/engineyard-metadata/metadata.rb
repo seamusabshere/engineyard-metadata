@@ -40,7 +40,7 @@ module EY
       ssh_username
       stack_name
       utilities
-    } unless defined?(METHODS)
+    }
     
     # The path to the current deploy on app servers.
     def current_path
