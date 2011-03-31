@@ -4,23 +4,7 @@ require 'yaml'
 module EY
   class Metadata
     # This gets pulled in when you're running from your developer machine (i.e., not on a cloud instance).
-    module Outsider
-      UNGETTABLE = METHODS.grep(/present/) + METHODS.grep(/password/) + METHODS.grep(/mysql/)
-      
-      GETTABLE = METHODS - UNGETTABLE - %w{ environment_name }
-      
-      UNGETTABLE.each do |name|
-        define_method name do
-          raise CannotGetFromHere
-        end
-      end
-      
-      GETTABLE.each do |name|
-        define_method name do
-          engine_yard_cloud_api.send name
-        end
-      end
-      
+    class Outsider < Metadata
       def eyrc_path
         File.join File.expand_path("~#{Etc.getpwuid.name}"), '.eyrc'
       end
@@ -83,6 +67,22 @@ module EY
       # An adapter that reads from the public EngineYard Cloud API (https://cloud.engineyard.com)
       def engine_yard_cloud_api
         @engine_yard_cloud_api ||= EngineYardCloudApi.new ey_cloud_token
+      end
+      
+      UNGETTABLE = METHODS.grep(/present/) + METHODS.grep(/password/) + METHODS.grep(/mysql/)
+  
+      GETTABLE = METHODS - instance_methods.map { |m| m.to_s } - UNGETTABLE
+  
+      UNGETTABLE.each do |name|
+        define_method name do
+          raise CannotGetFromHere
+        end
+      end
+  
+      GETTABLE.each do |name|
+        define_method name do
+          engine_yard_cloud_api.send name
+        end
       end
     end
   end

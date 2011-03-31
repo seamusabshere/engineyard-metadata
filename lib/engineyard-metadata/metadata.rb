@@ -1,5 +1,3 @@
-require 'singleton'
-
 module EY
   # All methods are defined on this module. For example, you're supposed to say
   #
@@ -7,8 +5,17 @@ module EY
   #
   # instead of trying to call it from a particular adapter.
   class Metadata
-    include Singleton
-    
+    autoload :Insider, 'engineyard-metadata/insider'
+    autoload :Outsider, 'engineyard-metadata/outsider'
+    autoload :SshAliasHelper, 'engineyard-metadata/ssh_alias_helper'
+    autoload :ChefDna, 'engineyard-metadata/chef_dna'
+    autoload :AmazonEc2Api, 'engineyard-metadata/amazon_ec2_api'
+    autoload :EngineYardCloudApi, 'engineyard-metadata/engine_yard_cloud_api'
+
+    # This gets raised when you can't get a particular piece of metadata from the execution environment you're in.
+    class CannotGetFromHere < RuntimeError
+    end
+
     attr_writer :app_name
     
     METHODS = %w{
@@ -51,27 +58,5 @@ module EY
     def shared_path
       "/data/#{app_name}/shared"
     end
-    
-    # This gets raised when you can't get a particular piece of metadata from the execution environment you're in.
-    class CannotGetFromHere < RuntimeError
-    end
-    
-    autoload :SshAliasHelper, 'engineyard-metadata/ssh_alias_helper'
-
-    autoload :Insider, 'engineyard-metadata/insider'
-    autoload :Outsider, 'engineyard-metadata/outsider'
-    autoload :ChefDna, 'engineyard-metadata/chef_dna'
-    autoload :AmazonEc2Api, 'engineyard-metadata/amazon_ec2_api'
-    autoload :EngineYardCloudApi, 'engineyard-metadata/engine_yard_cloud_api'
-    
-    def reload
-      if File.directory? '/var/log/engineyard'
-        Metadata.send :include, Insider
-      else
-        Metadata.send :include, Outsider
-      end
-    end
   end
 end
-
-EY.metadata.reload

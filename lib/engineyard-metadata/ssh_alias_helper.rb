@@ -11,7 +11,7 @@ module EY
       def ssh_aliases
         counter = Hash.new 0
         %w{ app_master db_master db_slaves app_slaves utilities }.map do |role_group|
-          send(role_group).map do |public_hostname|
+          [send(role_group)].flatten.map do |public_hostname|
             ssh_alias counter, role_group, public_hostname
           end
         end.flatten.join("\n")

@@ -98,6 +98,140 @@ You can put the output of <tt>ey_ssh_aliases</tt> into <tt>~/.ssh/config</tt>:
 
 This is the second generation of http://rubygems.org/gems/ey_cloud_awareness.
 
+== Sample test output
+
+    engineyard-metadata (master) $ rake
+    
+    EY.metadata
+      being executed on an EngineYard AppCloud (i.e. Amazon EC2) instance
+        it should behave like it does in all execution environments
+          by getting the database username
+          by getting the database name
+          by getting the database host
+          by getting the ssh username
+          by getting the app server hostnames
+          by getting the db server hostnames
+          by getting the utilities hostnames
+          by getting the app master hostname
+          by getting the db master hostname
+          by getting the db slave hostnames
+          by getting the app slave hostnames
+          by getting the solo hostname
+          by getting the environment name
+          by getting the stack name
+          by getting the repository URI
+          by getting the app name
+          by getting the current path
+          by getting the shared path
+          by getting helpful ssh aliases
+        it should behave like it's executing inside the cloud
+          by refusing to get the list of all environment names
+          by getting the present instance ID
+          by getting the present instance role (as a string)
+          by getting the present public hostname
+          by getting the present security group
+          by getting the database password
+          by getting the ssh password
+          by getting the mysql command
+          by getting the mysqldump command
+      being executed from a developer/administrator's local machine
+        controlled with environment variables
+          it should behave like it does in all execution environments
+            by getting the database username
+            by getting the database name
+            by getting the database host
+            by getting the ssh username
+            by getting the app server hostnames
+            by getting the db server hostnames
+            by getting the utilities hostnames
+            by getting the app master hostname
+            by getting the db master hostname
+            by getting the db slave hostnames
+            by getting the app slave hostnames
+            by getting the solo hostname
+            by getting the environment name
+            by getting the stack name
+            by getting the repository URI
+            by getting the app name
+            by getting the current path
+            by getting the shared path
+            by getting helpful ssh aliases
+          it should behave like it's executing outside the cloud
+            by getting the list of all environment names
+            by refusing to get the present instance ID
+            by refusing to get the present instance role (as a string)
+            by refusing to get the present public hostname
+            by refusing to get the present security group
+            by refusing to get the database password
+            by refusing to get the ssh password
+            by refusing to get the mysql command
+            by refusing to get the mysqldump command
+        controlled with attr writers
+          it should behave like it does in all execution environments
+            by getting the database username
+            by getting the database name
+            by getting the database host
+            by getting the ssh username
+            by getting the app server hostnames
+            by getting the db server hostnames
+            by getting the utilities hostnames
+            by getting the app master hostname
+            by getting the db master hostname
+            by getting the db slave hostnames
+            by getting the app slave hostnames
+            by getting the solo hostname
+            by getting the environment name
+            by getting the stack name
+            by getting the repository URI
+            by getting the app name
+            by getting the current path
+            by getting the shared path
+            by getting helpful ssh aliases
+          it should behave like it's executing outside the cloud
+            by getting the list of all environment names
+            by refusing to get the present instance ID
+            by refusing to get the present instance role (as a string)
+            by refusing to get the present public hostname
+            by refusing to get the present security group
+            by refusing to get the database password
+            by refusing to get the ssh password
+            by refusing to get the mysql command
+            by refusing to get the mysqldump command
+        depending on .eyrc
+          it should behave like it does in all execution environments
+            by getting the database username
+            by getting the database name
+            by getting the database host
+            by getting the ssh username
+            by getting the app server hostnames
+            by getting the db server hostnames
+            by getting the utilities hostnames
+            by getting the app master hostname
+            by getting the db master hostname
+            by getting the db slave hostnames
+            by getting the app slave hostnames
+            by getting the solo hostname
+            by getting the environment name
+            by getting the stack name
+            by getting the repository URI
+            by getting the app name
+            by getting the current path
+            by getting the shared path
+            by getting helpful ssh aliases
+          it should behave like it's executing outside the cloud
+            by getting the list of all environment names
+            by refusing to get the present instance ID
+            by refusing to get the present instance role (as a string)
+            by refusing to get the present public hostname
+            by refusing to get the present security group
+            by refusing to get the database password
+            by refusing to get the ssh password
+            by refusing to get the mysql command
+            by refusing to get the mysqldump command
+
+    Finished in 0.95816 seconds
+    112 examples, 0 failures
+
 == Copyright
 
 Copyright (c) 2010 Seamus Abshere. See LICENSE for details.

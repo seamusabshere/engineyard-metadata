@@ -1,9 +1,14 @@
 require 'rubygems'
+require 'bundler'
+Bundler.setup
 require 'rspec'
 require 'active_support/json/encoding'
 require 'fakeweb'
 require 'fakefs/safe'
 require 'eat' # otherwise it's loaded when fakefs is already active
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+require 'engineyard-metadata'
 
 FAKE_SECURITY_GROUP = 'ey-cm1_production_blue-1294775925-1371-55979'
 FAKE_INSTANCE_ID = 'i-ff17d493'
@@ -55,5 +60,3 @@ def stop_pretending
   FakeFS.deactivate!
   FakeWeb.clean_registry
 end
-
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'engineyard-metadata'))
