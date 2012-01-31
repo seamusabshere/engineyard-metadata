@@ -21,12 +21,25 @@ shared_examples_for "it does in all execution environments" do
     EY.metadata.app_servers.should == ["ec2-174-129-212-130.compute-1.amazonaws.com"]
   end
 
+  it 'by getting the app server IDs' do
+    EY.metadata.app_servers('amazon_id').should == ['i-ff17d493']
+  end
+
   it 'by getting the db server hostnames' do
     EY.metadata.db_servers.should == ["ec2-67-202-19-255.compute-1.amazonaws.com"]
   end
 
+  it 'by getting the db server instance IDs' do
+    EY.metadata.db_servers('amazon_id').should == ['i-f917d495']
+  end
+
+
   it 'by getting the utilities hostnames' do
     EY.metadata.utilities.should == []
+  end
+
+  it 'by getting the utilities IDs' do
+    EY.metadata.utilities('amazon_id').should == []
   end
 
   it 'by getting the app master hostname' do
@@ -37,12 +50,24 @@ shared_examples_for "it does in all execution environments" do
     EY.metadata.db_master.should == 'ec2-67-202-19-255.compute-1.amazonaws.com'
   end
 
+  it 'by getting the db master instance ID' do
+    EY.metadata.db_master('amazon_id').should == 'i-f917d495'
+  end
+
   it 'by getting the db slave hostnames' do
     EY.metadata.db_slaves.should == []
   end
 
+  it 'by getting the db slave instance IDs' do
+    EY.metadata.db_slaves('amazon_id').should == []
+  end
+
   it 'by getting the app slave hostnames' do
     EY.metadata.app_slaves.should == []
+  end
+
+  it 'by getting the app slave hostnames' do
+    EY.metadata.app_slaves('amazon_id').should == []
   end
 
   it 'by getting the solo hostname' do

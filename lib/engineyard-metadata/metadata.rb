@@ -16,6 +16,9 @@ module EY
     class CannotGetFromHere < RuntimeError
     end
 
+    # The default instance identifier for selector methods
+    DEFAULT_IDENTIFIER = 'public_hostname'
+
     attr_writer :app_name
     
     METHODS = %w{
