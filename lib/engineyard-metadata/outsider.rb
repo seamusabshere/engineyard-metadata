@@ -80,8 +80,8 @@ module EY
       end
   
       GETTABLE.each do |name|
-        define_method name do
-          engine_yard_cloud_api.send name
+        define_method name do |*args|
+          engine_yard_cloud_api.send name, *args
         end
       end
     end
