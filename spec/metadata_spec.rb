@@ -216,6 +216,7 @@ describe 'EY.metadata' do
     end
     describe "depending on .eyrc" do
       before do
+        FileUtils.mkdir_p File.dirname(EY.metadata.eyrc_path)
         File.open(EY.metadata.eyrc_path, 'w') { |f| f.write({'api_token' => FAKE_CLOUD_TOKEN + 'ccc'}.to_yaml) }
         EY.metadata.environment_name = 'cm1_production_blue'
         EY.metadata.ey_cloud_token.should == FAKE_CLOUD_TOKEN + 'ccc' # sanity check
