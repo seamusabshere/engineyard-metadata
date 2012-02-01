@@ -49,6 +49,16 @@ See the rdoc at {the engineyard-metadata rdoc}[http://rubydoc.info/gems/engineya
 
 When you're executing the gem from your instances, you don't have to configure anything. Just require the gem.
 
+If you see
+
+    Errno::EACCES: Permission denied - /etc/chef/dna.json
+
+then I suggest adding something like this to `deploy/before_bundle.rb`
+
+    sudo 'chmod a+r /etc/chef/dna.json'
+
+or find some other way to make the file readable.
+
 === When you're executing this gem from OUTSIDE the cloud
 
 You must...
