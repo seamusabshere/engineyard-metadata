@@ -5,7 +5,6 @@ require 'active_support/version'
 }.each do |active_support_3_requirement|
   require active_support_3_requirement
 end if ActiveSupport::VERSION::MAJOR == 3
-require 'eat'
 
 module EY
   class Metadata
@@ -16,7 +15,7 @@ module EY
       include SshAliasHelper
 
       def dna # :nodoc:
-        @dna ||= ActiveSupport::JSON.decode eat(PATH)
+        @dna ||= ActiveSupport::JSON.decode File.read(PATH)
       end
       
       def application # :nodoc:

@@ -5,7 +5,6 @@ require 'rspec'
 require 'active_support/json/encoding'
 require 'fakeweb'
 require 'fakefs/safe'
-require 'eat' # otherwise it's loaded when fakefs is already active
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'engineyard-metadata'
