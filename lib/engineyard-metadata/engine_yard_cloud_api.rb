@@ -46,63 +46,63 @@ module EY
         db_master
       end
 
-      # The public hostname of the db_master.
+      # An identifying attribute of the db_master. Defaults to public_hostname.
       #
-      # If you're on a solo app, it counts the solo as the app_master.
-      def db_master
+      # If you're on a solo app, it counts the solo as the db_master.
+      def db_master(identifier = EY::Metadata::DEFAULT_IDENTIFIER)
         if x = environment['instances'].detect { |i| i['role'] == 'db_master' }
-          x['public_hostname']
+          x[identifier]
         else
-          solo
+          solo(identifier)
         end
       end
       
-      # The public hostnames of all the app servers.
+      # An identifying attribute of each app server. Defaults to public_hostname.
       #
       # If you're on a solo app, it counts the solo as an app server.
-      def app_servers
-        environment['instances'].select { |i| %w{ app_master app solo }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+      def app_servers(identifier = EY::Metadata::DEFAULT_IDENTIFIER)
+        environment['instances'].select { |i| %w{ app_master app solo }.include? i['role'] }.map { |i| i[identifier] }.sort
       end
       
-      # The public hostnames of all the db servers.
+      # An identifying attribute of each DB server. Defaults to public_hostname.
       #
       # If you're on a solo app, it counts the solo as a db server.
-      def db_servers
-        environment['instances'].select { |i| %w{ db_master db_slave solo }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+      def db_servers(identifier = EY::Metadata::DEFAULT_IDENTIFIER)
+        environment['instances'].select { |i| %w{ db_master db_slave solo }.include? i['role'] }.map { |i| i[identifier] }.sort
       end
       
-      # The public hostnames of all the utility servers.
+      # An identifying attribute of each utility server. Defaults to public_hostname.
       #
       # If you're on a solo app, it counts the solo as a utility.
-      def utilities
-        environment['instances'].select { |i| %w{ util solo }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+      def utilities(identifier = EY::Metadata::DEFAULT_IDENTIFIER)
+        environment['instances'].select { |i| %w{ util solo }.include? i['role'] }.map { |i| i[identifier] }.sort
       end
       
-      # The public hostnames of all the app slaves.
-      def app_slaves
-        environment['instances'].select { |i| %w{ app }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+      # An identifying attribute of each app slave. Defaults to public_hostname. 
+      def app_slaves(identifier = EY::Metadata::DEFAULT_IDENTIFIER)
+        environment['instances'].select { |i| %w{ app }.include? i['role'] }.map { |i| i[identifier] }.sort
       end
   
-      # The public hostnames of all the db slaves.
-      def db_slaves
-        environment['instances'].select { |i| %w{ db_slave }.include? i['role'] }.map { |i| i['public_hostname'] }.sort
+      # An identifying attribute of each DB slave. Defaults to public_hostname.
+      def db_slaves(identifier = EY::Metadata::DEFAULT_IDENTIFIER)
+        environment['instances'].select { |i| %w{ db_slave }.include? i['role'] }.map { |i| i[identifier] }.sort
       end
       
-      # The public hostname of the app_master.
+      # An identifying attribute of the app_master. Defaults to public_hostname.
       #
       # If you're on a solo app, it counts the solo as the app_master.
-      def app_master
+      def app_master(identifier = EY::Metadata::DEFAULT_IDENTIFIER)
         if x = environment['instances'].detect { |i| i['role'] == 'app_master' }
-          x['public_hostname']
+          x[identifier]
         else
-          solo
+          solo(identifier)
         end
       end
 
-      # The public hostname of the solo.
-      def solo
+      # An identifying attribute of the solo. Defaults to public_hostname.
+      def solo(identifier = EY::Metadata::DEFAULT_IDENTIFIER)
         if x = environment['instances'].detect { |i| i['role'] == 'solo' }
-          x['public_hostname']
+          x[identifier]
         end
       end
       

@@ -36,14 +36,14 @@ module EY
       DELEGATED_TO_CHEF_DNA = METHODS - instance_methods.map { |m| m.to_s } - DELEGATED_TO_AMAZON_EC2_API
 
       DELEGATED_TO_AMAZON_EC2_API.each do |name|
-        define_method name do
-          amazon_ec2_api.send name
+        define_method name do |*args|
+          amazon_ec2_api.send name, *args
         end
       end
 
       DELEGATED_TO_CHEF_DNA.each do |name|
-        define_method name do
-          chef_dna.send name
+        define_method name do |*args|
+          chef_dna.send name, *args
         end
       end
     end
