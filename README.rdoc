@@ -8,7 +8,6 @@ To define a simple interface to useful metadata (passwords, IP addresses, etc.) 
 
 == Examples
 
-* Get a dynamically updated list of all running app servers so that you can pool memcached over all of them. (<tt>EY.metadata.app_servers</tt>)
 * Get the current database password so that you can write a script that connects to it. (<tt>EY.metadata.database_password</tt>)
 
 Here's the current method list:
@@ -40,6 +39,15 @@ Here's the current method list:
 	EY.metadata.ssh_username
 	EY.metadata.stack_name
 	EY.metadata.utilities
+
+== public_hostname, amazon_id, etc.
+
+Thanks to Nick Marden, you can do things like:
+
+    ?> EY.metadata.app_servers('amazon_id')
+    >> [ 'i-ff17d493', 'i-c217d423' ]
+
+By default, you get the public hostname.
 
 == Use
 
