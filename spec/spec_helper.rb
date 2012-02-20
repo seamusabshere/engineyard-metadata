@@ -3,7 +3,7 @@ require 'bundler'
 Bundler.setup
 require 'rspec'
 require 'active_support/json/encoding'
-require 'fakeweb'
+require 'webmock/rspec'
 require 'fakefs/safe'
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
@@ -14,11 +14,11 @@ FAKE_INSTANCE_ID = 'i-ff17d493'
 FAKE_CLOUD_TOKEN = 'justareallygreatsecret'
 
 def pretend_we_are_on_a_developer_machine
-  FakeWeb.allow_net_connect = false
-  FakeWeb.register_uri  :get,
-                        "https://cloud.engineyard.com/api/v2/environments",
-                        :status => ["200", "OK"],
-                        :body => File.read(File.join(File.dirname(__FILE__), 'support', 'engine_yard_cloud_api_response.json'))
+  WebMock.enable!
+  WebMock.stub_request(:get, "https://cloud.engineyard.com/api/v2/environments").to_return(
+    :status => 200,
+    :body => File.read(File.join(File.dirname(__FILE__), 'support', 'engine_yard_cloud_api_response.json')))
+    
   dot_git_config = File.read File.join(File.dirname(__FILE__), 'support', 'dot.git.config')
   FakeFS.activate!
   git_config_path = File.join Dir.pwd, '.git', 'config'
@@ -29,18 +29,18 @@ def pretend_we_are_on_a_developer_machine
 end
 
 def pretend_we_are_on_an_engineyard_appcloud_ec2_instance
-  FakeWeb.allow_net_connect = false
+  WebMock.enable!
   # fake call to amazon ec2 api to get present security group
-  FakeWeb.register_uri  :get,
-                        "http://169.254.169.254/latest/meta-data/security-groups",
-                        :status => ["200", "OK"],
-                        :body => FAKE_SECURITY_GROUP
+  WebMock.stub_request(:get, "http://169.254.169.254/latest/meta-data/security-groups").to_return(
+    :status => 200,
+    :body => FAKE_SECURITY_GROUP
+  )
 
   # fake call to amazon ec2 api to get present instance id
-  FakeWeb.register_uri  :get,
-                        "http://169.254.169.254/latest/meta-data/instance-id",
-                        :status => ["200", "OK"],
-                        :body => FAKE_INSTANCE_ID
+  WebMock.stub_request(:get, "http://169.254.169.254/latest/meta-data/instance-id").to_return(
+    :status => 200,
+    :body => FAKE_INSTANCE_ID
+  )
 
   # first read a file from the real file system...
   dna_json = File.read File.join(File.dirname(__FILE__), 'support', 'dna.json')
@@ -57,5 +57,5 @@ def stop_pretending
   # http://lukeredpath.co.uk/blog/using-fakefs-with-cucumber-features.html
   FakeFS::FileSystem.clear
   FakeFS.deactivate!
-  FakeWeb.clean_registry
+  WebMock.reset!
 end

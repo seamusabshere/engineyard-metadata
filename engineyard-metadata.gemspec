@@ -22,7 +22,4 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '>=2.3.4'
   s.add_dependency 'nap', '>=0.4'
   s.add_dependency 'eat', '>=0.0.5'
-  s.add_development_dependency "fakeweb"
-  s.add_development_dependency "fakefs"
-  s.add_development_dependency "rspec", "~>2"
 end
