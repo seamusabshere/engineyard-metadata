@@ -67,6 +67,17 @@ then I suggest adding something like this to `deploy/before_bundle.rb`
 
 or find some other way to make the file readable.
 
+The Engine Yard recipes will often reset the permissions on the file, so you can periodically fix that using
+a custom chef recipe like this:
+
+  # Only run on app server instances.
+  if ['app','app_master'].include?(node[:instance_role]) then
+    cron "Make /etc/chef/dna.json readable" do 
+      minute "*/5" 
+      command "chmod a+r /etc/chef/dna.json" 
+    end 
+  end
+
 === When you're executing this gem from OUTSIDE the cloud
 
 You must...
